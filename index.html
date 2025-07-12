@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEADNEST - Sales CRM</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+
+    <style>
+        /* Custom Styles for a high-class, professional UI */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+            font-weight: 400; 
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .nav-link:hover {
+            background-color: #f1f3f5;
+            color: #000;
+        }
+        .nav-link.active {
+            background-color: #e9ecef;
+            color: #000;
+            font-weight: 600;
+        }
+        .table-header {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 16px 24px;
+        }
+        .table-cell {
+            padding: 16px 24px;
+        }
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #dee2e6;
+            background-color: white;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        .action-button:hover {
+            background-color: #f8f9fa;
+            border-color: #adb5bd;
+        }
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .primary-action-btn {
+             background-color: #212529;
+             color: white;
+             border-color: #212529;
+        }
+        .primary-action-btn:hover {
+            background-color: #343a40;
+        }
+        .fab-menu-item {
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            opacity: 0;
+            transform: translateY(20px) scale(0.5);
+            transform-origin: bottom left;
+        }
+        .fab-menu-item.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .detail-action-button {
+            justify-content: flex-start;
+            width: 100%;
+            font-weight: 500;
+        }
+        .fab-blur-overlay {
+            transition: background-color 0.3s;
+        }
+        /* Input validation error style */
+        .input-error {
+            border-color: #ef4444 !important;
+        }
+        .auth-toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .auth-toggle-btn.active {
+            background-color: white;
+            color: #111827;
+            border-bottom-color: white;
+            margin-bottom: -1px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="text-gray-700 antialiased">
+
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="w-screen h-screen flex items-center justify-center bg-gray-100 p-4">
+        <div class="w-full max-w-md">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <div class="text-center mb-6">
+                    <h1 class="text-2xl text-gray-800 tracking-wider">
+                        <span class="font-light">LEAD</span><span class="font-extrabold">NEST</span>
+                    </h1>
+                     <p class="text-sm text-gray-500 mt-2 font-light">Manage your leads and appointments efficiently</p>
+                </div>
+                <!-- Auth Forms will be injected here -->
+                <div id="auth-forms"></div>
+                 <p class="text-center text-xs text-gray-400 mt-6 font-light">Protected and powered by <span class="font-semibold">PV Digital</span>. This web-app does not store your data outside your own credentials. It's safe, fast, robust & secure!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Screen (Initially hidden) -->
+    <div id="app-screen" class="hidden">
+        <div id="app-container" class="flex flex-col h-screen w-screen">
+            <!-- Header Navigation -->
+            <header class="bg-white border-b border-gray-200 px-8 z-20">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-8">
+                        <h1 class="text-xl text-gray-800 tracking-wider">
+                            <span class="font-light">LEAD</span><span class="font-extrabold">NEST</span>
+                        </h1>
+                        <nav id="top-nav" class="flex items-center space-x-2"></nav>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-sm font-semibold text-gray-600" id="user-email-display"></div>
+                        <button id="logout-btn" class="action-button">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main id="main-content" class="flex-1 overflow-y-auto p-8"></main>
+        </div>
+
+        <!-- FAB Blur Overlay -->
+        <div id="fab-blur-overlay" class="fab-blur-overlay fixed inset-0 z-20 hidden" style="backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); background-color: rgba(248, 249, 250, 0.5);"></div>
+
+        <!-- Floating Action Button (FAB) -->
+        <div id="fab-container" class="fixed z-30" style="bottom: 3%; left: 3%;">
+            <div id="fab-menu" class="flex flex-col items-start space-y-3 mb-3">
+                 <div id="fab-ai-assistant" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-purple-600 border-purple-600 hover:bg-purple-500"><i data-lucide="sparkles" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">AI Assistant</span></div>
+                 <div id="fab-log-interaction" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-blue-600 border-blue-600 hover:bg-blue-500"><i data-lucide="message-square-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">Log Interaction</span></div>
+                 <div id="fab-new-appointment" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-green-600 border-green-600 hover:bg-green-500"><i data-lucide="calendar-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">New Appointment</span></div>
+                 <div id="fab-new-lead" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg"><i data-lucide="user-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">New Lead</span></div>
+            </div>
+            <button id="fab-main-btn" class="bg-gray-800 text-white rounded-full p-4 shadow-xl hover:bg-gray-700 transition-transform transform hover:rotate-45"><i data-lucide="grip" class="w-6 h-6"></i></button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div id="modal-content" class="bg-white rounded-lg shadow-xl w-full max-w-2xl"></div>
+    </div>
+
+
+    <!-- Firebase and App Logic -->
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, addDoc, onSnapshot, query, updateDoc, where, getDocs, getDoc, arrayUnion, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- USER PROVIDED CONFIG ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfKTCdFaQTNXoIEzDoDCboxd5K1SWEbH4",
+            authDomain: "n0bugs.firebaseapp.com",
+            projectId: "n0bugs",
+            storageBucket: "n0bugs.appspot.com",
+            messagingSenderId: "739782684561",
+            appId: "1:739782684561:web:f7009a645514b71c193430",
+            measurementId: "G-2M80VXS52R"
+        };
+        const geminiApiKey = "AIzaSyDrOpab_hjh6S31DnQizKjlewGPOFTqByU";
+        
+        // --- GLOBAL APP STATE ---
+        let db, auth, userId, currentUserRole;
+        const agentId = 'agent_123';
+        const agentName = 'Agent Smith';
+
+        // --- DOM ELEMENTS ---
+        const mainContent = document.getElementById('main-content');
+        const topNav = document.getElementById('top-nav');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        const fabBlurOverlay = document.getElementById('fab-blur-overlay');
+        const authScreen = document.getElementById('auth-screen');
+        const appScreen = document.getElementById('app-screen');
+        const authForms = document.getElementById('auth-forms');
+        
+        // --- ROBUST ERROR HANDLING ---
+        const displayError = (message, error) => {
+            console.error(message, error);
+            const errorDiv = document.getElementById('auth-error') || document.createElement('div');
+            errorDiv.id = 'auth-error';
+            errorDiv.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4 text-sm';
+            errorDiv.textContent = error.message.replace('Firebase: ', '');
+            
+            const formContainer = document.getElementById('auth-form-container');
+            if(formContainer) {
+                formContainer.appendChild(errorDiv);
+            } else {
+                 authForms.appendChild(errorDiv);
+            }
+        };
+
+        // --- AUTHENTICATION FLOW ---
+        const renderAuthContainer = (isLogin = true) => {
+            authForms.innerHTML = `
+                <div class="flex bg-gray-100 rounded-lg p-1 mb-6">
+                    <button id="login-toggle" class="auth-toggle-btn rounded-md ${isLogin ? 'active' : ''}">Login</button>
+                    <button id="register-toggle" class="auth-toggle-btn rounded-md ${!isLogin ? 'active' : ''}">Register</button>
+                </div>
+                <div id="auth-form-container"></div>
+                <div class="my-6 flex items-center"><div class="flex-grow border-t border-gray-200"></div><span class="flex-shrink mx-4 text-gray-400 text-xs">OR</span><div class="flex-grow border-t border-gray-200"></div></div>
+                <button id="google-signin-btn" class="w-full action-button p-3 flex items-center justify-center"><svg class="w-5 h-5 mr-2" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.222,0-9.582-3.463-11.188-8.189l-6.571,4.819C9.656,39.663,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.38,36.128,44,30.651,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>Continue with Google</button>
+            `;
+            
+            if (isLogin) showLoginForm();
+            else showSignupForm();
+
+            document.getElementById('login-toggle').addEventListener('click', () => renderAuthContainer(true));
+            document.getElementById('register-toggle').addEventListener('click', () => renderAuthContainer(false));
+            document.getElementById('google-signin-btn').addEventListener('click', signInWithGoogle);
+        };
+        
+        const showLoginForm = () => {
+            document.getElementById('auth-form-container').innerHTML = `
+                <form id="login-form" class="space-y-4">
+                    <div><label class="text-sm font-medium text-gray-600">Email</label><input name="email" type="email" placeholder="your@email.com" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
+                    <div><label class="text-sm font-medium text-gray-600">Password</label><input name="password" type="password" placeholder="******" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
+                    <button type="submit" class="w-full primary-action-btn p-3 mt-2">Login</button>
+                </form>
+            `;
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = e.target.email.value;
+                const password = e.target.password.value;
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    displayError("Login Failed", error);
+                }
+            });
+        };
+
+        const showSignupForm = () => {
+            document.getElementById('auth-form-container').innerHTML = `
+                <form id="signup-form" class="space-y-4">
+                    <div><label class="text-sm font-medium text-gray-600">Email</label><input name="email" type="email" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
+                    <div><label class="text-sm font-medium text-gray-600">Password</label><input name="password" type="password" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
+                    <div class="flex items-center justify-center space-x-4 pt-2">
+                        <label class="flex items-center"><input type="radio" name="role" value="manager" class="mr-2" checked> Manager</label>
+                        <label class="flex items-center"><input type="radio" name="role" value="agent" class="mr-2"> Agent</label>
+                    </div>
+                    <button type="submit" class="w-full primary-action-btn p-3 mt-2">Register</button>
+                </form>
+            `;
+            document.getElementById('signup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = e.target.email.value;
+                const password = e.target.password.value;
+                const role = e.target.role.value;
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    await setDoc(doc(db, "users", userCredential.user.uid), {
+                        email: email,
+                        role: role,
+                        createdAt: new Date()
+                    });
+                } catch (error) {
+                    displayError("Sign Up Failed", error);
+                }
+            });
+        };
+
+        const signInWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                displayError("Google Sign-In Failed", error);
+            }
+        };
+        
+        // --- INITIALIZATION ---
+        async function initialize() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+            } catch (error) {
+                displayError("Firebase initialization failed. Please check your configuration.", error);
+                return;
+            }
+            
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    const userDocRef = doc(db, "users", userId);
+                    let userDoc = await getDoc(userDocRef);
+
+                    if (!userDoc.exists()) {
+                        // Create user doc if it's a first-time Google sign-in
+                        await setDoc(userDocRef, {
+                            email: user.email,
+                            role: 'agent', // Default role for new Google sign-ups
+                            createdAt: new Date()
+                        });
+                        userDoc = await getDoc(userDocRef); // Re-fetch the doc
+                    }
+
+                    currentUserRole = userDoc.data().role;
+                    
+                    authScreen.classList.add('hidden');
+                    appScreen.classList.remove('hidden');
+                    document.getElementById('user-email-display').textContent = user.email;
+                    document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+                    setupNavigation();
+                    renderDashboard();
+                    setupFab();
+                } else {
+                    appScreen.classList.add('hidden');
+                    authScreen.classList.remove('hidden');
+                    renderAuthContainer();
+                }
+            });
+        }
+        
+        // --- All other functions (navigation, modals, page renderers) remain the same ---
+        // The only change is that the role switcher is removed, and currentUserRole is now set by auth.
+        
+        function setupNavigation() {
+            const baseNav = [
+                { id: 'dashboard', label: 'Dashboard', icon: 'layout-grid' },
+                { id: 'leads', label: 'Active Leads', icon: 'users' },
+                { id: 'cold-leads', label: 'Cold Leads', icon: 'snowflake' },
+                { id: 'appointments', label: 'Appointments', icon: 'calendar' },
+            ];
+            const managerNav = [ ...baseNav, { id: 'reports', label: 'Reports', icon: 'bar-chart-2' }, ];
+            const agentNav = baseNav;
+            const navItems = currentUserRole === 'manager' ? managerNav : agentNav;
+
+            topNav.innerHTML = navItems.map(item => `<a href="#" id="nav-${item.id}" class="nav-link"><i data-lucide="${item.icon}" class="w-4 h-4 mr-2"></i><span>${item.label}</span></a>`).join('');
+
+            const navLinks = topNav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    const navId = link.id.replace('nav-', '');
+                    switch(navId) {
+                        case 'dashboard': renderDashboard(); break;
+                        case 'leads': renderLeadsPage('active'); break;
+                        case 'cold-leads': renderLeadsPage('cold'); break;
+                        case 'appointments': renderAppointmentsPage(); break;
+                        case 'reports': renderReportsPage(); break;
+                    }
+                });
+            });
+            document.getElementById('nav-dashboard').classList.add('active');
+            lucide.createIcons();
+        }
+
+        function setupFab() {
+            const fabMainBtn = document.getElementById('fab-main-btn');
+            const fabMenuItems = document.querySelectorAll('.fab-menu-item');
+            
+            const toggleFabMenu = () => {
+                fabMenuItems.forEach(item => item.classList.toggle('open'));
+                fabBlurOverlay.classList.toggle('hidden');
+            };
+
+            fabMainBtn.addEventListener('click', toggleFabMenu);
+            fabBlurOverlay.addEventListener('click', toggleFabMenu);
+
+            document.getElementById('fab-new-lead').addEventListener('click', showAddLeadModal);
+            document.getElementById('fab-new-appointment').addEventListener('click', () => showScheduleMeetingModal(null));
+            document.getElementById('fab-log-interaction').addEventListener('click', showLogInteractionModal);
+            document.getElementById('fab-ai-assistant').addEventListener('click', showAIAssistantModal);
+        }
+        
+        function openModal(content, size = 'max-w-2xl') {
+            modalContent.className = `bg-white rounded-lg shadow-xl w-full ${size}`;
+            modalContent.innerHTML = content;
+            modalBackdrop.classList.remove('hidden');
+            modalBackdrop.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('hidden');
+            modalBackdrop.classList.remove('flex');
+            modalContent.innerHTML = '';
+        }
+        
+        function showConfirmModal(title, message, onConfirm) {
+            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">${title}</h3><p class="text-gray-600 mb-6">${message}</p><div class="flex justify-end space-x-3"><button id="cancel-confirm-btn" class="action-button">Cancel</button><button id="confirm-action-btn" class="action-button bg-red-600 text-white hover:bg-red-500 border-red-600">Confirm</button></div></div>`, 'max-w-md');
+            document.getElementById('cancel-confirm-btn').addEventListener('click', closeModal);
+            document.getElementById('confirm-action-btn').addEventListener('click', () => { onConfirm(); closeModal(); });
+        }
+        
+        modalBackdrop.addEventListener('click', (e) => { if (e.target === modalBackdrop) closeModal(); });
+
+        function createStatCard(title, value, icon) {
+            return `<div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">${title}</span><i data-lucide="${icon}" class="w-5 h-5 text-gray-400"></i></div><p class="text-4xl font-light text-gray-800 mt-2">${value}</p></div>`;
+        }
+
+        function renderDashboard() {
+            if (currentUserRole === 'manager') {
+                renderManagerDashboard();
+            } else {
+                renderAgentDashboard();
+            }
+        }
+
+        async function renderManagerDashboard() {
+            mainContent.innerHTML = `<div class="text-center p-10">Loading Manager Dashboard...</div>`;
+            if (!userId) return;
+            const leadsRef = collection(db, 'users', userId, 'leads');
+            
+            try {
+                const snapshot = await getDocs(leadsRef);
+                
+                let totalRevenue = 0, dealsWon = 0, totalDeals = 0, coldLeadsCount = 0;
+                const agentPerformance = {}, leadSources = {}, funnel = { new: 0, contacted: 0, appointment: 0, won: 0 };
+
+                snapshot.docs.forEach(doc => {
+                    const lead = { id: doc.id, ...doc.data() };
+                    totalDeals++;
+                    if(lead.status === 'won') { dealsWon++; totalRevenue += lead.leadValue || 0; }
+                    if(lead.status === 'cold') coldLeadsCount++;
+                    if(lead.status === 'active' && !lead.notes?.length) funnel.new++;
+                    if(lead.status === 'active' && lead.notes?.length) funnel.contacted++;
+                    if(lead.appointments?.length > 0) funnel.appointment++;
+                    if(lead.status === 'won') funnel.won++;
+                    if(lead.assignedAgent) {
+                        if(!agentPerformance[lead.assignedAgent]) agentPerformance[lead.assignedAgent] = { name: agentName, deals: 0, revenue: 0, won: 0 };
+                        agentPerformance[lead.assignedAgent].deals++;
+                        if(lead.status === 'won') { agentPerformance[lead.assignedAgent].won++; agentPerformance[lead.assignedAgent].revenue += lead.leadValue || 0; }
+                    }
+                    if(lead.leadSource) {
+                        if(!leadSources[lead.leadSource]) leadSources[lead.leadSource] = { count: 0, value: 0};
+                        leadSources[lead.leadSource].count++;
+                        if(lead.status === 'won') leadSources[lead.leadSource].value += lead.leadValue || 0;
+                    }
+                });
+
+                const winRate = totalDeals > 0 ? ((dealsWon / totalDeals) * 100).toFixed(1) : 0;
+                const avgDealSize = dealsWon > 0 ? (totalRevenue / dealsWon).toFixed(0) : 0;
+                
+                mainContent.innerHTML = `
+                    <h2 class="text-3xl font-light text-gray-800 mb-6">Manager Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                        ${createStatCard('Total Revenue', '$' + totalRevenue.toLocaleString(), 'dollar-sign')}
+                        ${createStatCard('Win Rate', winRate + '%', 'trophy')}
+                        ${createStatCard('Avg. Deal Size', '$' + avgDealSize.toLocaleString(), 'gem')}
+                        ${createStatCard('Cold Leads', coldLeadsCount, 'snowflake')}
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2">${renderManagerReports(agentPerformance, leadSources)}</div>
+                        <div>${renderSalesFunnel(funnel)}</div>
+                    </div>`;
+                lucide.createIcons();
+            } catch (error) { displayError("Could not load Manager Dashboard. This is likely a Firestore security rules issue.", error); }
+        }
+
+        async function renderAgentDashboard() {
+            mainContent.innerHTML = `<div class="text-center p-10">Loading Agent Dashboard...</div>`;
+            if (!userId) return;
+            const leadsRef = collection(db, 'users', userId, 'leads');
+            const q = query(leadsRef, where("assignedAgent", "==", agentId));
+            
+            try {
+                const snapshot = await getDocs(q);
+                let activeLeads = 0, appointments = 0, dealsWon = 0;
+                snapshot.docs.forEach(doc => {
+                    const lead = doc.data();
+                    if(lead.status === 'active') activeLeads++;
+                    if(lead.appointments) appointments += lead.appointments.length;
+                    if(lead.status === 'won') dealsWon++;
+                });
+
+                mainContent.innerHTML = `
+                     <h2 class="text-3xl font-light text-gray-800 mb-6">My Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        ${createStatCard('My Active Leads', activeLeads, 'user-check')}
+                        ${createStatCard('Appointments Booked', appointments, 'calendar')}
+                        ${createStatCard('Deals Won', dealsWon, 'award')}
+                    </div>`;
+                lucide.createIcons();
+            } catch (error) { displayError("Could not load Agent Dashboard.", error); }
+        }
+
+        function renderManagerReports(agentData, sourceData) {
+            const topAgent = Object.values(agentData).sort((a,b) => b.revenue - a.revenue)[0];
+            const sortedSources = Object.entries(sourceData).sort((a,b) => b[1].value - a[1].value);
+            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 mb-8"><h3 class="text-xl font-medium text-gray-800 mb-4">Team Performance</h3><p class="font-light mb-2">Top Agent: <span class="font-semibold">${topAgent ? topAgent.name : 'N/A'}</span> with $${topAgent ? topAgent.revenue.toLocaleString() : 0} in revenue.</p></div><div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 mb-4">Lead Source Value</h3><div class="space-y-3">${sortedSources.length > 0 ? sortedSources.map(([source, data]) => `<div class="w-full"><div class="flex justify-between text-sm font-medium mb-1"><span>${source}</span><span>$${data.value.toLocaleString()}</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: ${ (data.value / (sortedSources[0][1].value || 1)) * 100}%"></div></div></div>`).join('') : '<p class="text-center font-light text-gray-500 p-4">No data available.</p>'}</div></div>`;
+        }
+
+        function renderSalesFunnel(funnelData) {
+            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 mb-4">Sales Funnel</h3><div class="space-y-4">${createFunnelStage('New', funnelData.new, 'bg-purple-200 text-purple-800')}${createFunnelStage('Contacted', funnelData.contacted, 'bg-indigo-200 text-indigo-800')}${createFunnelStage('Appointment', funnelData.appointment, 'bg-blue-200 text-blue-800')}${createFunnelStage('Won', funnelData.won, 'bg-green-200 text-green-800')}</div></div>`;
+        }
+
+        function createFunnelStage(name, value, colorClass) {
+            return `<div class="flex items-center justify-between"><span class="font-medium text-sm">${name}</span><span class="text-sm font-semibold px-2 py-1 rounded-md ${colorClass}">${value}</span></div>`;
+        }
+        
+        function renderReportsPage() { mainContent.innerHTML = `<div class="text-center p-10">Reports page is under construction. Key metrics are on the Manager Dashboard.</div>`; }
+        
+        function renderLeadsPage(status) {
+             const title = status === 'active' ? 'Active Leads' : 'Cold Leads';
+             mainContent.innerHTML = `<div class="text-center p-10">Loading ${title}...</div>`;
+             if (!userId) return;
+             const leadsRef = collection(db, 'users', userId, 'leads');
+             let q;
+             if (currentUserRole === 'manager') { q = query(leadsRef, where("status", "==", status)); } 
+             else { q = query(leadsRef, where("status", "==", status), where("assignedAgent", "==", agentId)); }
+             onSnapshot(q, (snapshot) => {
+                const leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                mainContent.innerHTML = renderLeadsTable(title, leads);
+                lucide.createIcons();
+                setupTableInteractions(status);
+             }, (error) => { displayError(`Could not load ${title}.`, error); });
+        }
+
+        function renderLeadsTable(title, leads) {
+            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm"><div class="p-5 flex justify-between items-center border-b border-gray-200"><h3 class="text-xl font-medium text-gray-800">${title}</h3><div class="flex items-center space-x-2">${title === 'Active Leads' ? `<button id="header-new-lead-btn" class="action-button primary-action-btn"><i data-lucide="plus" class="w-4 h-4 mr-2"></i>New Lead</button>` : ''}</div></div><div class="p-4"><input type="text" placeholder="Search leads..." class="w-full md:w-1/3 p-2 border border-gray-300 rounded-md text-sm font-light"></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="border-b border-gray-200"><th class="p-4 text-left w-10"><input type="checkbox" id="select-all-checkbox"></th><th class="p-4 text-left table-header">Name</th><th class="p-4 text-left table-header">Contact Info</th><th class="p-4 text-left table-header">Company</th><th class="p-4 text-left table-header">Value</th><th class="p-4 text-left table-header">Assigned To</th><th class="p-4 text-left table-header">Actions</th></tr></thead><tbody id="leads-tbody">${leads.length > 0 ? leads.map(lead => `
+                                    <tr class="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+                                        <td class="table-cell"><input type="checkbox" class="lead-checkbox" data-id="${lead.id}"></td>
+                                        <td class="table-cell font-medium text-gray-800 text-sm"><a href="#" class="hover:underline view-lead-details" data-id="${lead.id}">${lead.name}</a></td>
+                                        <td class="table-cell text-gray-600 text-sm font-light"><div>${lead.email}</div><div class="text-xs text-gray-500 mt-1">${lead.phone}</div></td>
+                                        <td class="table-cell text-gray-600 text-sm font-light"><div>${lead.companyName}</div></td>
+                                        <td class="table-cell text-gray-600 text-sm font-semibold">$${(lead.leadValue || 0).toLocaleString()}</td>
+                                        <td class="table-cell text-gray-600 text-sm font-light">${lead.assignedAgent ? agentName : 'Unassigned'}</td>
+                                        <td class="table-cell">${currentUserRole === 'manager' && !lead.assignedAgent ? `<button class="action-button assign-lead-btn" data-id="${lead.id}"><i data-lucide="user-check" class="w-4 h-4 mr-2"></i>Assign</button>` : ''}</td>
+                                    </tr>`).join('') : `<tr><td colspan="7" class="text-center p-12 text-gray-500 font-light">No leads found.</td></tr>`}</tbody></table></div></div>`;
+        }
+        
+        async function renderLeadDetailView(leadId) {
+            const leadRef = doc(db, 'users', userId, 'leads', leadId);
+            const leadSnap = await getDoc(leadRef);
+            if (!leadSnap.exists()) { mainContent.innerHTML = `<div class="text-center p-10">Lead not found.</div>`; return; }
+            const lead = { id: leadSnap.id, ...leadSnap.data() };
+            openModal(`<div class="p-8"><div class="flex justify-between items-start mb-6"><div><h3 class="text-2xl font-semibold">${lead.name}</h3><p class="text-gray-500">${lead.companyName} - <span class="font-bold">$${(lead.leadValue || 0).toLocaleString()}</span></p></div><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800">&times;</button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div class="col-span-1"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">Details</h4><div class="space-y-4 text-sm"><p><strong class="font-semibold text-gray-600">Email:</strong><br><span class="font-light">${lead.email}</span></p><p><strong class="font-semibold text-gray-600">Phone:</strong><br><span class="font-light">${lead.phone}</span></p><p><strong class="font-semibold text-gray-600">Country:</strong><br><span class="font-light">${lead.country || 'N/A'}</span></p><p><strong class="font-semibold text-gray-600">Source:</strong><br><span class="font-light">${lead.leadSource || 'N/A'}</span></p><p><strong class="font-semibold text-gray-600">Status:</strong><br><span class="capitalize px-2 py-1 text-xs rounded-full font-medium ${lead.status === 'active' ? 'bg-blue-100 text-blue-800' : 'bg-gray-200 text-gray-800'}">${lead.status}</span></p></div><h4 class="text-sm font-semibold text-gray-500 uppercase mt-8 mb-4 tracking-wider">Actions</h4><div class="flex flex-col space-y-2"><button class="action-button detail-action-button mark-won-btn" data-id="${lead.id}"><i data-lucide="award" class="w-4 h-4 mr-2"></i>Mark as Won</button><button class="action-button detail-action-button mark-cold-btn" data-id="${lead.id}"><i data-lucide="snowflake" class="w-4 h-4 mr-2"></i>Mark as Cold</button><button class="action-button detail-action-button mark-lost-btn" data-id="${lead.id}"><i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>Mark as Lost</button></div></div><div class="col-span-2"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">Call Notes</h4><div id="notes-list" class="space-y-3 max-h-64 overflow-y-auto pr-2 mb-4">${lead.notes?.map(note => `<div class="bg-gray-50 p-3 rounded-md text-sm"><p class="font-light">${note.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(note.timestamp.seconds * 1000).toLocaleString()}</p></div>`).join('') || '<p class="text-sm text-gray-400 font-light">No notes yet.</p>'}</div><textarea id="new-note-text" class="w-full p-2 border border-gray-300 rounded-md font-light" placeholder="Add a new call note..."></textarea><button id="add-note-btn" data-id="${lead.id}" class="action-button primary-action-btn mt-2">Add Note</button></div></div></div>`, 'max-w-4xl');
+            document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+            document.getElementById('add-note-btn').addEventListener('click', addNote);
+            document.querySelector('.mark-won-btn').addEventListener('click', (e) => updateLeadStatus(e.currentTarget.dataset.id, 'won'));
+            document.querySelector('.mark-lost-btn').addEventListener('click', (e) => updateLeadStatus(e.currentTarget.dataset.id, 'lost'));
+            document.querySelector('.mark-cold-btn').addEventListener('click', (e) => { showConfirmModal('Mark as Cold?', 'This will trigger the AI nurturing sequence.', () => { updateLeadStatus(e.currentTarget.dataset.id, 'cold'); triggerAINurturing(lead); closeModal(); }); });
+        }
+        
+        async function renderAppointmentsPage() {
+            mainContent.innerHTML = `<div class="text-center p-10">Loading Appointments...</div>`;
+            if (!userId) return;
+            const leadsRef = collection(db, 'users', userId, 'leads');
+            const q = query(leadsRef, where("appointments", "!=", null));
+            const snapshot = await getDocs(q);
+            const allAppointments = [];
+            snapshot.docs.forEach(doc => {
+                const lead = doc.data();
+                if (currentUserRole === 'agent' && lead.assignedAgent !== agentId) return;
+                lead.appointments.forEach(appt => { allAppointments.push({ ...appt, leadName: lead.name, companyName: lead.companyName }); });
+            });
+            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 mb-6">Scheduled Appointments</h2><div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5">${allAppointments.length > 0 ? allAppointments.map(appt => `<div class="border-b last:border-b-0 py-4"><p class="font-semibold">${new Date(appt.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p><p class="text-sm text-gray-700 font-light mt-1">${appt.notes}</p><p class="text-xs text-gray-500 mt-2">With: ${appt.leadName} (${appt.companyName})</p></div>`).join('') : '<p class="text-center p-12 text-gray-500 font-light">No appointments scheduled.</p>'}</div>`;
+        }
+        
+        function setupTableInteractions(status) {
+            document.querySelectorAll('.view-lead-details').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); renderLeadDetailView(e.currentTarget.dataset.id); }); });
+            document.querySelectorAll('.assign-lead-btn').forEach(btn => { btn.addEventListener('click', (e) => { const leadId = e.currentTarget.dataset.id; showConfirmModal('Assign Lead?', `Assign this lead to ${agentName}?`, () => updateLeadStatus(leadId, 'active', agentId)); }); });
+            document.getElementById('header-new-lead-btn')?.addEventListener('click', showAddLeadModal);
+        }
+        
+        const updateLeadStatus = (id, newStatus, assignedAgent = null) => {
+            const leadRef = doc(db, 'users', userId, 'leads', id);
+            const dataToUpdate = { status: newStatus };
+            if (assignedAgent) { dataToUpdate.assignedAgent = assignedAgent; }
+            updateDoc(leadRef, dataToUpdate).then(() => { if(document.querySelector('.nav-link.active')) { document.querySelector('.nav-link.active').click(); } });
+        };
+        
+        async function addNote(e) {
+            const leadId = e.currentTarget.dataset.id;
+            const noteText = document.getElementById('new-note-text').value;
+            if (!noteText.trim()) return;
+            const leadRef = doc(db, 'users', userId, 'leads', leadId);
+            const newNote = { text: noteText, timestamp: new Date() };
+            await updateDoc(leadRef, { notes: arrayUnion(newNote) });
+            const notesList = document.getElementById('notes-list');
+            const noteElement = document.createElement('div');
+            noteElement.className = 'bg-gray-50 p-3 rounded-md text-sm';
+            noteElement.innerHTML = `<p class="font-light">${newNote.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(newNote.timestamp.seconds * 1000).toLocaleString()}</p>`;
+            if (notesList.querySelector('p')) { notesList.innerHTML = ''; }
+            notesList.appendChild(noteElement);
+            document.getElementById('new-note-text').value = '';
+        }
+
+        function showScheduleMeetingModal(leadId) {
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Schedule Meeting</h3><form id="schedule-meeting-form"><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Date & Time</label><input name="date" type="datetime-local" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Notes</label><textarea name="notes" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="3" required></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" class="action-button primary-action-btn">Schedule</button></div></form></div>`, 'max-w-lg');
+            document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+            document.getElementById('schedule-meeting-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const meetingData = { date: new Date(formData.get('date')).toISOString(), notes: formData.get('notes') };
+                const leadRef = doc(db, 'users', userId, 'leads', leadId);
+                await updateDoc(leadRef, { appointments: arrayUnion(meetingData) });
+                closeModal();
+            });
+        }
+
+        function showAddLeadModal() {
+             openModal(`<div class="p-8"><div class="flex justify-between items-center"><h3 class="text-xl font-semibold">Add New Lead</h3><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800">&times;</button></div><p class="text-sm text-gray-500 font-light mt-1 mb-6">Fill in the information below to add a new lead.</p><form id="add-lead-form" class="space-y-4"><div class="grid grid-cols-2 gap-x-6 gap-y-4"><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Name</label><input name="name" type="text" placeholder="John Doe" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div><label class="block text-sm font-medium text-gray-700">Country Code</label><input name="countryCode" type="text" placeholder="+91" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div><label class="block text-sm font-medium text-gray-700">Phone Number</label><input name="phoneNumber" type="tel" placeholder="9876543210" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Email</label><input name="email" type="email" placeholder="email@example.com" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Company Name</label><input name="companyName" type="text" placeholder="Innovate Inc." class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Company Website</label><input name="companyWebsite" type="url" placeholder="https://example.com" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Designation</label><input name="title" type="text" placeholder="Marketing Director" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div></div><div class="pt-6 flex justify-end space-x-3"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" class="action-button primary-action-btn">Add Lead</button></div></form></div>`, 'max-w-3xl');
+            document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+            document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+            document.getElementById('add-lead-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const leadData = {
+                    name: formData.get('name'),
+                    phone: `${formData.get('countryCode')} ${formData.get('phoneNumber')}`,
+                    email: formData.get('email'),
+                    companyName: formData.get('companyName'),
+                    companyWebsite: formData.get('companyWebsite'),
+                    title: formData.get('title'),
+                    country: 'Unknown',
+                    leadSource: 'Manual',
+                    leadValue: 0,
+                };
+                
+                const leadsRef = collection(db, 'users', userId, 'leads');
+                try { await addDoc(leadsRef, { ...leadData, status: 'active', createdAt: new Date(), notes: [], appointments: [] }); closeModal(); } 
+                catch (error) { console.error("Error adding lead: ", error); alert("Failed to add lead. Check console for details."); }
+            });
+        }
+        async function triggerAINurturing(lead) {
+            const notesText = lead.notes?.map(n => n.text).join('\n') || "No call notes available.";
+            const prompt = `Analyze the following lead information and generate a personalized follow-up message. The goal is to re-engage this "cold" lead by providing value and showing you understand their business. LEAD DETAILS: - Contact: ${lead.name} - Company: ${lead.companyName} - Country: ${lead.country} - Call Notes: ${notesText} INSTRUCTIONS: 1. Infer the lead's potential business needs. 2. Write a short, professional, and friendly message. 3. Tailor for ${lead.country.toLowerCase() === 'india' ? 'WhatsApp' : 'Email'}. 4. End with a soft call-to-action.`;
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-4">AI Nurturing Sequence</h3><p class="text-sm text-gray-500 mb-4">Generating personalized outreach for ${lead.name}...</p><textarea id="ai-outreach-content" class="w-full h-48 p-3 border border-gray-300 rounded-md font-light" readonly>Generating...</textarea><div class="flex justify-end space-x-3 mt-4"><button id="close-ai-modal-btn" class="action-button">Close</button><button id="send-outreach-btn" class="action-button primary-action-btn" disabled><i data-lucide="${lead.country.toLowerCase() === 'india' ? 'message-circle' : 'mail'}" class="w-4 h-4 mr-2"></i>Send</button></div></div>`);
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`;
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+                if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+                const result = await response.json();
+                const text = result.candidates[0].content.parts[0].text;
+                document.getElementById('ai-outreach-content').value = text;
+                const sendBtn = document.getElementById('send-outreach-btn');
+                sendBtn.disabled = false;
+                sendBtn.addEventListener('click', () => { console.log(`Simulated sending to ${lead.name}`); closeModal(); });
+            } catch (error) {
+                console.error("Gemini API error:", error);
+                document.getElementById('ai-outreach-content').value = 'Failed to generate AI message. Check console for details.';
+            }
+            document.getElementById('close-ai-modal-btn').addEventListener('click', closeModal);
+        }
+
+        function showLogInteractionModal() {
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Log an Interaction</h3><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Find Lead</label><input id="log-interaction-search" type="text" placeholder="Search by name or company..." class="w-full p-3 border border-gray-300 rounded-md font-light"><div id="log-interaction-results" class="mt-2"></div></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Notes</label><textarea id="log-interaction-notes" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="4" placeholder="Add call notes or meeting summary..."></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" id="log-interaction-submit" class="action-button primary-action-btn" disabled>Log Interaction</button></div></div>`, 'max-w-lg');
+            
+            const searchInput = document.getElementById('log-interaction-search');
+            const resultsDiv = document.getElementById('log-interaction-results');
+            const submitBtn = document.getElementById('log-interaction-submit');
+            const notesText = document.getElementById('log-interaction-notes');
+            let selectedLeadId = null;
+
+            searchInput.addEventListener('keyup', async (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm.length < 2) { resultsDiv.innerHTML = ''; return; }
+                
+                const leadsRef = collection(db, 'users', userId, 'leads');
+                const snapshot = await getDocs(leadsRef);
+                const results = [];
+                snapshot.docs.forEach(doc => {
+                    const lead = { id: doc.id, ...doc.data() };
+                    if (lead.name.toLowerCase().includes(searchTerm) || lead.companyName.toLowerCase().includes(searchTerm)) {
+                        results.push(lead);
+                    }
+                });
+
+                resultsDiv.innerHTML = results.map(lead => `<div class="p-2 hover:bg-gray-100 cursor-pointer rounded" data-id="${lead.id}" data-name="${lead.name}">${lead.name} (${lead.companyName})</div>`).join('');
+                
+                resultsDiv.querySelectorAll('div').forEach(item => {
+                    item.addEventListener('click', () => {
+                        selectedLeadId = item.dataset.id;
+                        searchInput.value = item.dataset.name;
+                        resultsDiv.innerHTML = '';
+                        submitBtn.disabled = false;
+                    });
+                });
+            });
+
+            document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+            submitBtn.addEventListener('click', async () => {
+                if (!selectedLeadId || !notesText.value.trim()) return;
+                const leadRef = doc(db, 'users', userId, 'leads', selectedLeadId);
+                const newNote = { text: notesText.value, timestamp: new Date() };
+                await updateDoc(leadRef, { notes: arrayUnion(newNote) });
+                closeModal();
+            });
+        }
+
+        function showAIAssistantModal() {
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">AI Assistant</h3><div class="mb-4"><textarea id="ai-assistant-prompt" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="3" placeholder="Ask the AI anything... e.g., 'Draft a follow-up for John Smith'"></textarea></div><div class="mb-4 bg-gray-50 p-4 rounded-md min-h-[100px]" id="ai-assistant-response"></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Close</button><button type="submit" id="ai-assistant-submit" class="action-button primary-action-btn">Generate</button></div></div>`, 'max-w-lg');
+            
+            document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+            document.getElementById('ai-assistant-submit').addEventListener('click', async () => {
+                const promptInput = document.getElementById('ai-assistant-prompt');
+                const responseDiv = document.getElementById('ai-assistant-response');
+                const prompt = promptInput.value;
+                if (!prompt.trim()) return;
+
+                responseDiv.innerHTML = 'Generating...';
+                try {
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`;
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+                    if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+                    const result = await response.json();
+                    const text = result.candidates[0].content.parts[0].text;
+                    responseDiv.innerText = text;
+                } catch (error) {
+                    console.error("AI Assistant Error:", error);
+                    responseDiv.innerText = 'Failed to get a response from the AI.';
+                }
+            });
+        }
+
+        // --- START THE APP ---
+        window.onload = initialize;
+    </script>
+</body>
+</html>
