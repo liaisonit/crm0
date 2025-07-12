@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,10 +18,28 @@
 
     <style>
         /* Custom Styles for a high-class, professional UI */
+        :root {
+            --background: #f8f9fa;
+            --foreground: #212529;
+            --card-background: white;
+            --border-color: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+        }
+        html.dark {
+            --background: #111827;
+            --foreground: #f9fafb;
+            --card-background: #1f2937;
+            --border-color: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+        }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f8f9fa;
+            background-color: var(--background);
+            color: var(--text-primary);
             font-weight: 400; 
+            transition: background-color 0.3s, color 0.3s;
         }
         .nav-link {
             display: flex;
@@ -30,44 +48,32 @@
             border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
-            color: #495057;
+            color: var(--text-secondary);
             transition: background-color 0.2s, color 0.2s;
         }
         .nav-link:hover {
-            background-color: #f1f3f5;
-            color: #000;
+            background-color: rgba(128, 128, 128, 0.1);
+            color: var(--text-primary);
         }
         .nav-link.active {
-            background-color: #e9ecef;
-            color: #000;
+            background-color: rgba(128, 128, 128, 0.2);
+            color: var(--text-primary);
             font-weight: 600;
-        }
-        .table-header {
-            font-size: 11px;
-            font-weight: 600;
-            color: #6c757d;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 16px 24px;
-        }
-        .table-cell {
-            padding: 16px 24px;
         }
         .action-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 16px;
+            padding: 12px 16px; 
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
-            border: 1px solid #dee2e6;
-            background-color: white;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-background);
             transition: all 0.2s;
             line-height: 1;
         }
         .action-button:hover {
-            background-color: #f8f9fa;
             border-color: #adb5bd;
         }
         .action-button:disabled {
@@ -75,12 +81,12 @@
             cursor: not-allowed;
         }
         .primary-action-btn {
-             background-color: #212529;
-             color: white;
-             border-color: #212529;
+             background-color: var(--foreground);
+             color: var(--background);
+             border-color: var(--foreground);
         }
         .primary-action-btn:hover {
-            background-color: #343a40;
+            opacity: 0.9;
         }
         .fab-menu-item {
             transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -100,27 +106,95 @@
         .fab-blur-overlay {
             transition: background-color 0.3s;
         }
-        /* Input validation error style */
         .input-error {
             border-color: #ef4444 !important;
         }
         .auth-toggle-btn {
             flex: 1;
-            padding: 10px;
-            border: 1px solid #e5e7eb;
+            padding: 6px; 
             font-weight: 600;
-            transition: all 0.2s;
-        }
-        .auth-toggle-btn.active {
-            background-color: white;
-            color: #111827;
-            border-bottom-color: white;
-            margin-bottom: -1px;
+            font-size: 14px;
+            transition: color 0.3s ease-in-out;
+            border-radius: 6px;
             z-index: 10;
         }
+        .auth-toggle-btn.active {
+            color: #111827;
+        }
+        .auth-form {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+            position: absolute;
+            width: 100%;
+        }
+        .auth-form.active {
+            opacity: 1;
+            visibility: visible;
+            position: relative;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .auth-form.active {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        
+        /* Lead Card Styles */
+        .lead-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: card-fade-in 0.5s ease-out forwards;
+        }
+        .lead-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        html.dark .lead-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        @keyframes card-fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-active { background-color: #e0f2fe; color: #0c4a6e; }
+        .status-cold { background-color: #e0e7ff; color: #3730a3; }
+        .status-won { background-color: #dcfce7; color: #166534; }
+        .status-lost { background-color: #fee2e2; color: #991b1b; }
+
+        #modal-content {
+            background-color: var(--background);
+            animation: modal-slide-down 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes modal-slide-down {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .profile-dropdown {
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
     </style>
 </head>
-<body class="text-gray-700 antialiased">
+<body class="text-gray-700 dark:text-gray-300 antialiased">
 
     <!-- Auth Screen -->
     <div id="auth-screen" class="w-screen h-screen flex items-center justify-center bg-gray-100 p-4">
@@ -134,7 +208,7 @@
                 </div>
                 <!-- Auth Forms will be injected here -->
                 <div id="auth-forms"></div>
-                 <p class="text-center text-xs text-gray-400 mt-6 font-light">Protected and powered by <span class="font-semibold">PV Digital</span>. This web-app does not store your data outside your own credentials. It's safe, fast, robust & secure!</p>
+                 <p class="text-center text-xs text-gray-400 mt-6 font-light">© 2024-25 No-NonSence CRM • Crafted with lot of ♥ by AM.</p>
             </div>
         </div>
     </div>
@@ -143,17 +217,24 @@
     <div id="app-screen" class="hidden">
         <div id="app-container" class="flex flex-col h-screen w-screen">
             <!-- Header Navigation -->
-            <header class="bg-white border-b border-gray-200 px-8 z-20">
+            <header class="bg-white dark:bg-gray-900/80 dark:backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 px-8 z-20">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center space-x-8">
-                        <h1 class="text-xl text-gray-800 tracking-wider">
+                        <h1 class="text-xl text-gray-800 dark:text-white tracking-wider">
                             <span class="font-light">LEAD</span><span class="font-extrabold">NEST</span>
                         </h1>
                         <nav id="top-nav" class="flex items-center space-x-2"></nav>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <div class="text-sm font-semibold text-gray-600" id="user-email-display"></div>
-                        <button id="logout-btn" class="action-button">Logout</button>
+                        <div id="profile-menu-container" class="relative">
+                            <button id="profile-menu-button" class="w-10 h-10 rounded-full bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-white font-bold text-sm uppercase">
+                                AB
+                            </button>
+                            <div id="profile-menu-dropdown" class="profile-dropdown absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 border border-gray-200 dark:border-gray-700 origin-top-right transform scale-95 opacity-0 hidden">
+                                <a href="#" id="profile-settings-link" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+                                <a href="#" id="logout-btn" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -168,10 +249,10 @@
         <!-- Floating Action Button (FAB) -->
         <div id="fab-container" class="fixed z-30" style="bottom: 3%; left: 3%;">
             <div id="fab-menu" class="flex flex-col items-start space-y-3 mb-3">
-                 <div id="fab-ai-assistant" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-purple-600 border-purple-600 hover:bg-purple-500"><i data-lucide="sparkles" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">AI Assistant</span></div>
-                 <div id="fab-log-interaction" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-blue-600 border-blue-600 hover:bg-blue-500"><i data-lucide="message-square-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">Log Interaction</span></div>
-                 <div id="fab-new-appointment" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-green-600 border-green-600 hover:bg-green-500"><i data-lucide="calendar-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">New Appointment</span></div>
-                 <div id="fab-new-lead" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg"><i data-lucide="user-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md ml-3">New Lead</span></div>
+                 <div id="fab-ai-assistant" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-purple-600 border-purple-600 hover:bg-purple-500"><i data-lucide="sparkles" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">AI Assistant</span></div>
+                 <div id="fab-log-interaction" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-blue-600 border-blue-600 hover:bg-blue-500"><i data-lucide="message-square-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">Log Interaction</span></div>
+                 <div id="fab-new-appointment" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-green-600 border-green-600 hover:bg-green-500"><i data-lucide="calendar-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">New Appointment</span></div>
+                 <div id="fab-new-lead" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg"><i data-lucide="user-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">New Lead</span></div>
             </div>
             <button id="fab-main-btn" class="bg-gray-800 text-white rounded-full p-4 shadow-xl hover:bg-gray-700 transition-transform transform hover:rotate-45"><i data-lucide="grip" class="w-6 h-6"></i></button>
         </div>
@@ -179,7 +260,7 @@
 
     <!-- Modal -->
     <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-        <div id="modal-content" class="bg-white rounded-lg shadow-xl w-full max-w-2xl"></div>
+        <div id="modal-content" class="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl"></div>
     </div>
 
 
@@ -187,7 +268,7 @@
     <script type="module">
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, addDoc, onSnapshot, query, updateDoc, where, getDocs, getDoc, arrayUnion, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- USER PROVIDED CONFIG ---
@@ -200,13 +281,10 @@
             appId: "1:739782684561:web:f7009a645514b71c193430",
             measurementId: "G-2M80VXS52R"
         };
-        const geminiApiKey = "AIzaSyDrOpab_hjh6S31DnQizKjlewGPOFTqByU";
         
         // --- GLOBAL APP STATE ---
         let db, auth, userId, currentUserRole;
-        const agentId = 'agent_123';
-        const agentName = 'Agent Smith';
-
+        
         // --- DOM ELEMENTS ---
         const mainContent = document.getElementById('main-content');
         const topNav = document.getElementById('top-nav');
@@ -223,97 +301,151 @@
             const errorDiv = document.getElementById('auth-error') || document.createElement('div');
             errorDiv.id = 'auth-error';
             errorDiv.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4 text-sm';
-            errorDiv.textContent = error.message.replace('Firebase: ', '');
+            
+            if (error?.code === 'auth/email-already-in-use') {
+                errorDiv.innerHTML = 'This email is already registered. <a href="#" id="error-show-login" class="font-semibold underline">Please log in.</a>';
+            } else {
+                errorDiv.textContent = error?.message?.replace('Firebase: ', '') || 'An unknown error occurred.';
+            }
             
             const formContainer = document.getElementById('auth-form-container');
             if(formContainer) {
+                const existingError = formContainer.querySelector('#auth-error');
+                if (existingError) {
+                    existingError.remove();
+                }
                 formContainer.appendChild(errorDiv);
-            } else {
-                 authForms.appendChild(errorDiv);
+            }
+            
+            const errorLoginLink = document.getElementById('error-show-login');
+            if (errorLoginLink) {
+                errorLoginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    renderAuthContainer(true);
+                });
             }
         };
 
         // --- AUTHENTICATION FLOW ---
         const renderAuthContainer = (isLogin = true) => {
             authForms.innerHTML = `
-                <div class="flex bg-gray-100 rounded-lg p-1 mb-6">
-                    <button id="login-toggle" class="auth-toggle-btn rounded-md ${isLogin ? 'active' : ''}">Login</button>
-                    <button id="register-toggle" class="auth-toggle-btn rounded-md ${!isLogin ? 'active' : ''}">Register</button>
+                <div class="relative flex bg-gray-100 rounded-lg p-1 mb-6">
+                    <div id="auth-slider" class="absolute bg-white rounded-md shadow-md transition-all duration-500 ease-in-out" style="width: calc(50% - 4px); left: ${isLogin ? '4px' : '50%'}; top: 4px; bottom: 4px; transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);"></div>
+                    <button id="login-toggle" class="auth-toggle-btn relative z-10 ${isLogin ? 'active' : ''}">Login</button>
+                    <button id="register-toggle" class="auth-toggle-btn relative z-10 ${!isLogin ? 'active' : ''}">Register</button>
                 </div>
-                <div id="auth-form-container"></div>
-                <div class="my-6 flex items-center"><div class="flex-grow border-t border-gray-200"></div><span class="flex-shrink mx-4 text-gray-400 text-xs">OR</span><div class="flex-grow border-t border-gray-200"></div></div>
-                <button id="google-signin-btn" class="w-full action-button p-3 flex items-center justify-center"><svg class="w-5 h-5 mr-2" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.222,0-9.582-3.463-11.188-8.189l-6.571,4.819C9.656,39.663,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.38,36.128,44,30.651,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>Continue with Google</button>
+                <div id="auth-form-container" class="relative" style="min-height: 220px;"></div>
             `;
             
-            if (isLogin) showLoginForm();
-            else showSignupForm();
+            const slider = document.getElementById('auth-slider');
+            const formContainer = document.getElementById('auth-form-container');
 
-            document.getElementById('login-toggle').addEventListener('click', () => renderAuthContainer(true));
-            document.getElementById('register-toggle').addEventListener('click', () => renderAuthContainer(false));
-            document.getElementById('google-signin-btn').addEventListener('click', signInWithGoogle);
+            const showForm = (isLogin) => {
+                const existingForm = formContainer.querySelector('.auth-form');
+                if(existingForm) {
+                    existingForm.classList.remove('active');
+                }
+                
+                setTimeout(() => {
+                    formContainer.innerHTML = ''; // Clear previous form
+                    const formWrapper = document.createElement('div');
+                    formWrapper.className = 'auth-form';
+                    formContainer.appendChild(formWrapper);
+
+                    if(isLogin) {
+                        formWrapper.innerHTML = `
+                            <form id="login-form" class="space-y-4">
+                                <div><label class="text-xs font-medium text-gray-600">Email</label><input name="email" type="email" placeholder="your@email.com" class="w-full p-3 border border-gray-300 rounded-lg mt-1 font-light text-sm" required></div>
+                                <div><label class="text-xs font-medium text-gray-600">Password</label><input name="password" type="password" placeholder="******" class="w-full p-3 border border-gray-300 rounded-lg mt-1 font-light text-sm" required></div>
+                                <button type="submit" class="w-full primary-action-btn p-3 rounded-lg">Login</button>
+                            </form>
+                        `;
+                        document.getElementById('login-form').addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            const email = e.target.email.value.trim();
+                            const password = e.target.password.value;
+                            
+                            if (!email) {
+                                displayError("Login Failed", { message: "Email address cannot be empty." });
+                                return;
+                            }
+                            if (!validateEmail(email)) { 
+                                displayError("Login Failed", { message: "Please enter a valid email address." }); 
+                                return; 
+                            }
+                            
+                            try { 
+                                await signInWithEmailAndPassword(auth, email, password); 
+                            } catch (error) { 
+                                displayError("Login Failed", error); 
+                            }
+                        });
+                    } else {
+                         formWrapper.innerHTML = `
+                            <form id="signup-form" class="space-y-4">
+                                <div><label class="text-xs font-medium text-gray-600">Email</label><input name="email" type="email" placeholder="your@email.com" class="w-full p-3 border border-gray-300 rounded-lg mt-1 font-light text-sm" required></div>
+                                <div><label class="text-xs font-medium text-gray-600">Password</label><input name="password" type="password" placeholder="******" class="w-full p-3 border border-gray-300 rounded-lg mt-1 font-light text-sm" required></div>
+                                <button type="submit" class="w-full primary-action-btn p-3 rounded-lg">Register</button>
+                            </form>
+                        `;
+                        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            const email = e.target.email.value.trim();
+                            const password = e.target.password.value;
+
+                            if (!email) {
+                                displayError("Sign Up Failed", { message: "Email address cannot be empty." });
+                                return;
+                            }
+                            if (!validateEmail(email)) { 
+                                displayError("Sign Up Failed", { message: "Please enter a valid email address." }); 
+                                return; 
+                            }
+
+                            try {
+                                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                                const name = email.split('@')[0];
+                                await updateProfile(userCredential.user, { displayName: name });
+                                await setDoc(doc(db, "users", userCredential.user.uid), { email: email, role: 'agent', displayName: name, createdAt: new Date() });
+                            } catch (error) { 
+                                displayError("Sign Up Failed", error); 
+                            }
+                        });
+                    }
+                    setTimeout(() => formWrapper.classList.add('active'), 10);
+                }, 150); // Wait for fade out
+            }
+
+            showForm(isLogin);
+
+            document.getElementById('login-toggle').addEventListener('click', () => {
+                slider.style.left = '4px';
+                document.getElementById('login-toggle').classList.add('active');
+                document.getElementById('register-toggle').classList.remove('active');
+                showForm(true);
+            });
+            document.getElementById('register-toggle').addEventListener('click', () => {
+                slider.style.left = '50%';
+                document.getElementById('register-toggle').classList.add('active');
+                document.getElementById('login-toggle').classList.remove('active');
+                showForm(false);
+            });
         };
         
-        const showLoginForm = () => {
-            document.getElementById('auth-form-container').innerHTML = `
-                <form id="login-form" class="space-y-4">
-                    <div><label class="text-sm font-medium text-gray-600">Email</label><input name="email" type="email" placeholder="your@email.com" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
-                    <div><label class="text-sm font-medium text-gray-600">Password</label><input name="password" type="password" placeholder="******" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
-                    <button type="submit" class="w-full primary-action-btn p-3 mt-2">Login</button>
-                </form>
-            `;
-            document.getElementById('login-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = e.target.email.value;
-                const password = e.target.password.value;
-                try {
-                    await signInWithEmailAndPassword(auth, email, password);
-                } catch (error) {
-                    displayError("Login Failed", error);
-                }
-            });
-        };
-
-        const showSignupForm = () => {
-            document.getElementById('auth-form-container').innerHTML = `
-                <form id="signup-form" class="space-y-4">
-                    <div><label class="text-sm font-medium text-gray-600">Email</label><input name="email" type="email" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
-                    <div><label class="text-sm font-medium text-gray-600">Password</label><input name="password" type="password" class="w-full p-3 border border-gray-300 rounded-md mt-1 font-light" required></div>
-                    <div class="flex items-center justify-center space-x-4 pt-2">
-                        <label class="flex items-center"><input type="radio" name="role" value="manager" class="mr-2" checked> Manager</label>
-                        <label class="flex items-center"><input type="radio" name="role" value="agent" class="mr-2"> Agent</label>
-                    </div>
-                    <button type="submit" class="w-full primary-action-btn p-3 mt-2">Register</button>
-                </form>
-            `;
-            document.getElementById('signup-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = e.target.email.value;
-                const password = e.target.password.value;
-                const role = e.target.role.value;
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    await setDoc(doc(db, "users", userCredential.user.uid), {
-                        email: email,
-                        role: role,
-                        createdAt: new Date()
-                    });
-                } catch (error) {
-                    displayError("Sign Up Failed", error);
-                }
-            });
-        };
-
-        const signInWithGoogle = async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                displayError("Google Sign-In Failed", error);
-            }
+        const validateEmail = (email) => {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
         };
         
         // --- INITIALIZATION ---
         async function initialize() {
+            // Apply theme on initial load
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
             try {
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
@@ -330,22 +462,22 @@
                     let userDoc = await getDoc(userDocRef);
 
                     if (!userDoc.exists()) {
-                        // Create user doc if it's a first-time Google sign-in
+                        const name = user.email.split('@')[0];
                         await setDoc(userDocRef, {
                             email: user.email,
-                            role: 'agent', // Default role for new Google sign-ups
+                            role: 'agent',
+                            displayName: user.displayName || name,
                             createdAt: new Date()
                         });
-                        userDoc = await getDoc(userDocRef); // Re-fetch the doc
+                        userDoc = await getDoc(userDocRef);
                     }
 
                     currentUserRole = userDoc.data().role;
                     
                     authScreen.classList.add('hidden');
                     appScreen.classList.remove('hidden');
-                    document.getElementById('user-email-display').textContent = user.email;
-                    document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
-
+                    
+                    setupHeader(user);
                     setupNavigation();
                     renderDashboard();
                     setupFab();
@@ -357,17 +489,52 @@
             });
         }
         
-        // --- All other functions (navigation, modals, page renderers) remain the same ---
-        // The only change is that the role switcher is removed, and currentUserRole is now set by auth.
+        // --- UI SETUP FUNCTIONS ---
+        function setupHeader(user) {
+            const profileButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-menu-dropdown');
+            const settingsLink = document.getElementById('profile-settings-link');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            const displayName = user.displayName || user.email;
+            const initials = displayName.split(' ').map(n => n[0]).join('').substring(0, 2);
+            profileButton.textContent = initials;
+
+            profileButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = profileDropdown.classList.contains('hidden');
+                if (isHidden) {
+                    profileDropdown.classList.remove('hidden');
+                    setTimeout(() => profileDropdown.classList.remove('opacity-0', 'scale-95'), 10);
+                } else {
+                    profileDropdown.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => profileDropdown.classList.add('hidden'), 200);
+                }
+            });
+            
+            settingsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                renderSettingsPage();
+            });
+            logoutBtn.addEventListener('click', () => signOut(auth));
+
+            window.addEventListener('click', () => {
+                if (!profileDropdown.classList.contains('hidden')) {
+                    profileDropdown.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => profileDropdown.classList.add('hidden'), 200);
+                }
+            });
+        }
         
         function setupNavigation() {
             const baseNav = [
                 { id: 'dashboard', label: 'Dashboard', icon: 'layout-grid' },
                 { id: 'leads', label: 'Active Leads', icon: 'users' },
                 { id: 'cold-leads', label: 'Cold Leads', icon: 'snowflake' },
+                { id: 'won-leads', label: 'Won Leads', icon: 'award' },
                 { id: 'appointments', label: 'Appointments', icon: 'calendar' },
             ];
-            const managerNav = [ ...baseNav, { id: 'reports', label: 'Reports', icon: 'bar-chart-2' }, ];
+            const managerNav = baseNav; // Managers see all base tabs
             const agentNav = baseNav;
             const navItems = currentUserRole === 'manager' ? managerNav : agentNav;
 
@@ -384,12 +551,21 @@
                         case 'dashboard': renderDashboard(); break;
                         case 'leads': renderLeadsPage('active'); break;
                         case 'cold-leads': renderLeadsPage('cold'); break;
+                        case 'won-leads': renderLeadsPage('won'); break;
                         case 'appointments': renderAppointmentsPage(); break;
-                        case 'reports': renderReportsPage(); break;
+                        case 'settings': renderSettingsPage(); break;
                     }
                 });
             });
-            document.getElementById('nav-dashboard').classList.add('active');
+
+            // Set default active link
+            const dashboardLink = document.getElementById('nav-dashboard');
+            if (dashboardLink) {
+                dashboardLink.classList.add('active');
+            } else if (navLinks.length > 0) {
+                navLinks[0].classList.add('active');
+            }
+
             lucide.createIcons();
         }
 
@@ -412,7 +588,7 @@
         }
         
         function openModal(content, size = 'max-w-2xl') {
-            modalContent.className = `bg-white rounded-lg shadow-xl w-full ${size}`;
+            modalContent.className = `bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full ${size}`;
             modalContent.innerHTML = content;
             modalBackdrop.classList.remove('hidden');
             modalBackdrop.classList.add('flex');
@@ -426,15 +602,15 @@
         }
         
         function showConfirmModal(title, message, onConfirm) {
-            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">${title}</h3><p class="text-gray-600 mb-6">${message}</p><div class="flex justify-end space-x-3"><button id="cancel-confirm-btn" class="action-button">Cancel</button><button id="confirm-action-btn" class="action-button bg-red-600 text-white hover:bg-red-500 border-red-600">Confirm</button></div></div>`, 'max-w-md');
+            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">${title}</h3><p class="text-gray-600 dark:text-gray-400 mb-6">${message}</p><div class="flex justify-end space-x-3"><button id="cancel-confirm-btn" class="action-button">Cancel</button><button id="confirm-action-btn" class="action-button bg-red-600 text-white hover:bg-red-500 border-red-600">Confirm</button></div></div>`, 'max-w-md');
             document.getElementById('cancel-confirm-btn').addEventListener('click', closeModal);
-            document.getElementById('confirm-action-btn').addEventListener('click', () => { onConfirm(); closeModal(); });
+            document.getElementById('confirm-action-btn').addEventListener('click', onConfirm);
         }
         
         modalBackdrop.addEventListener('click', (e) => { if (e.target === modalBackdrop) closeModal(); });
 
         function createStatCard(title, value, icon) {
-            return `<div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">${title}</span><i data-lucide="${icon}" class="w-5 h-5 text-gray-400"></i></div><p class="text-4xl font-light text-gray-800 mt-2">${value}</p></div>`;
+            return `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500 dark:text-gray-400">${title}</span><i data-lucide="${icon}" class="w-5 h-5 text-gray-400"></i></div><p class="text-4xl font-light text-gray-800 dark:text-white mt-2">${value}</p></div>`;
         }
 
         function renderDashboard() {
@@ -451,12 +627,13 @@
             const leadsRef = collection(db, 'users', userId, 'leads');
             
             try {
-                const snapshot = await getDocs(leadsRef);
+                const leadsSnapshot = await getDocs(leadsRef);
                 
                 let totalRevenue = 0, dealsWon = 0, totalDeals = 0, coldLeadsCount = 0;
-                const agentPerformance = {}, leadSources = {}, funnel = { new: 0, contacted: 0, appointment: 0, won: 0 };
+                const agentPerformance = {};
+                const leadSources = {}, funnel = { new: 0, contacted: 0, appointment: 0, won: 0 };
 
-                snapshot.docs.forEach(doc => {
+                leadsSnapshot.docs.forEach(doc => {
                     const lead = { id: doc.id, ...doc.data() };
                     totalDeals++;
                     if(lead.status === 'won') { dealsWon++; totalRevenue += lead.leadValue || 0; }
@@ -465,11 +642,18 @@
                     if(lead.status === 'active' && lead.notes?.length) funnel.contacted++;
                     if(lead.appointments?.length > 0) funnel.appointment++;
                     if(lead.status === 'won') funnel.won++;
-                    if(lead.assignedAgent) {
-                        if(!agentPerformance[lead.assignedAgent]) agentPerformance[lead.assignedAgent] = { name: agentName, deals: 0, revenue: 0, won: 0 };
-                        agentPerformance[lead.assignedAgent].deals++;
-                        if(lead.status === 'won') { agentPerformance[lead.assignedAgent].won++; agentPerformance[lead.assignedAgent].revenue += lead.leadValue || 0; }
+                    
+                    if(lead.assignedAgentId && lead.assignedAgentName) {
+                        if(!agentPerformance[lead.assignedAgentId]) {
+                            agentPerformance[lead.assignedAgentId] = { name: lead.assignedAgentName, deals: 0, revenue: 0, won: 0 };
+                        }
+                        agentPerformance[lead.assignedAgentId].deals++;
+                        if(lead.status === 'won') { 
+                            agentPerformance[lead.assignedAgentId].won++; 
+                            agentPerformance[lead.assignedAgentId].revenue += lead.leadValue || 0; 
+                        }
                     }
+
                     if(lead.leadSource) {
                         if(!leadSources[lead.leadSource]) leadSources[lead.leadSource] = { count: 0, value: 0};
                         leadSources[lead.leadSource].count++;
@@ -481,7 +665,7 @@
                 const avgDealSize = dealsWon > 0 ? (totalRevenue / dealsWon).toFixed(0) : 0;
                 
                 mainContent.innerHTML = `
-                    <h2 class="text-3xl font-light text-gray-800 mb-6">Manager Dashboard</h2>
+                    <h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">Manager Dashboard</h2>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
                         ${createStatCard('Total Revenue', '$' + totalRevenue.toLocaleString(), 'dollar-sign')}
                         ${createStatCard('Win Rate', winRate + '%', 'trophy')}
@@ -493,14 +677,14 @@
                         <div>${renderSalesFunnel(funnel)}</div>
                     </div>`;
                 lucide.createIcons();
-            } catch (error) { displayError("Could not load Manager Dashboard. This is likely a Firestore security rules issue.", error); }
+            } catch (error) { displayError("Could not load Manager Dashboard.", error); }
         }
 
         async function renderAgentDashboard() {
             mainContent.innerHTML = `<div class="text-center p-10">Loading Agent Dashboard...</div>`;
             if (!userId) return;
             const leadsRef = collection(db, 'users', userId, 'leads');
-            const q = query(leadsRef, where("assignedAgent", "==", agentId));
+            const q = query(leadsRef, where("assignedAgentId", "==", auth.currentUser.uid));
             
             try {
                 const snapshot = await getDocs(q);
@@ -513,7 +697,7 @@
                 });
 
                 mainContent.innerHTML = `
-                     <h2 class="text-3xl font-light text-gray-800 mb-6">My Dashboard</h2>
+                     <h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">My Dashboard</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         ${createStatCard('My Active Leads', activeLeads, 'user-check')}
                         ${createStatCard('Appointments Booked', appointments, 'calendar')}
@@ -526,46 +710,65 @@
         function renderManagerReports(agentData, sourceData) {
             const topAgent = Object.values(agentData).sort((a,b) => b.revenue - a.revenue)[0];
             const sortedSources = Object.entries(sourceData).sort((a,b) => b[1].value - a[1].value);
-            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 mb-8"><h3 class="text-xl font-medium text-gray-800 mb-4">Team Performance</h3><p class="font-light mb-2">Top Agent: <span class="font-semibold">${topAgent ? topAgent.name : 'N/A'}</span> with $${topAgent ? topAgent.revenue.toLocaleString() : 0} in revenue.</p></div><div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 mb-4">Lead Source Value</h3><div class="space-y-3">${sortedSources.length > 0 ? sortedSources.map(([source, data]) => `<div class="w-full"><div class="flex justify-between text-sm font-medium mb-1"><span>${source}</span><span>$${data.value.toLocaleString()}</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: ${ (data.value / (sortedSources[0][1].value || 1)) * 100}%"></div></div></div>`).join('') : '<p class="text-center font-light text-gray-500 p-4">No data available.</p>'}</div></div>`;
+            return `<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5 mb-8"><h3 class="text-xl font-medium text-gray-800 dark:text-white mb-4">Team Performance</h3><p class="font-light mb-2">Top Agent: <span class="font-semibold">${topAgent ? topAgent.name : 'N/A'}</span> with $${topAgent ? topAgent.revenue.toLocaleString() : 0} in revenue.</p></div><div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 dark:text-white mb-4">Lead Source Value</h3><div class="space-y-3">${sortedSources.length > 0 ? sortedSources.map(([source, data]) => `<div class="w-full"><div class="flex justify-between text-sm font-medium mb-1"><span>${source}</span><span>$${data.value.toLocaleString()}</span></div><div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: ${ (data.value / (sortedSources[0][1].value || 1)) * 100}%"></div></div></div>`).join('') : '<p class="text-center font-light text-gray-500 p-4">No data available.</p>'}</div></div>`;
         }
 
         function renderSalesFunnel(funnelData) {
-            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 mb-4">Sales Funnel</h3><div class="space-y-4">${createFunnelStage('New', funnelData.new, 'bg-purple-200 text-purple-800')}${createFunnelStage('Contacted', funnelData.contacted, 'bg-indigo-200 text-indigo-800')}${createFunnelStage('Appointment', funnelData.appointment, 'bg-blue-200 text-blue-800')}${createFunnelStage('Won', funnelData.won, 'bg-green-200 text-green-800')}</div></div>`;
+            return `<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 dark:text-white mb-4">Sales Funnel</h3><div class="space-y-4">${createFunnelStage('New', funnelData.new, 'bg-purple-200 text-purple-800')}${createFunnelStage('Contacted', funnelData.contacted, 'bg-indigo-200 text-indigo-800')}${createFunnelStage('Appointment', funnelData.appointment, 'bg-blue-200 text-blue-800')}${createFunnelStage('Won', funnelData.won, 'bg-green-200 text-green-800')}</div></div>`;
         }
 
         function createFunnelStage(name, value, colorClass) {
             return `<div class="flex items-center justify-between"><span class="font-medium text-sm">${name}</span><span class="text-sm font-semibold px-2 py-1 rounded-md ${colorClass}">${value}</span></div>`;
         }
         
-        function renderReportsPage() { mainContent.innerHTML = `<div class="text-center p-10">Reports page is under construction. Key metrics are on the Manager Dashboard.</div>`; }
-        
         function renderLeadsPage(status) {
-             const title = status === 'active' ? 'Active Leads' : 'Cold Leads';
+             const title = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
              mainContent.innerHTML = `<div class="text-center p-10">Loading ${title}...</div>`;
              if (!userId) return;
              const leadsRef = collection(db, 'users', userId, 'leads');
              let q;
              if (currentUserRole === 'manager') { q = query(leadsRef, where("status", "==", status)); } 
-             else { q = query(leadsRef, where("status", "==", status), where("assignedAgent", "==", agentId)); }
+             else { q = query(leadsRef, where("status", "==", status), where("assignedAgentId", "==", auth.currentUser.uid)); }
              onSnapshot(q, (snapshot) => {
                 const leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                mainContent.innerHTML = renderLeadsTable(title, leads);
+                mainContent.innerHTML = renderLeadsView(title, leads);
                 lucide.createIcons();
-                setupTableInteractions(status);
+                setupLeadInteractions(leads);
              }, (error) => { displayError(`Could not load ${title}.`, error); });
         }
 
-        function renderLeadsTable(title, leads) {
-            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm"><div class="p-5 flex justify-between items-center border-b border-gray-200"><h3 class="text-xl font-medium text-gray-800">${title}</h3><div class="flex items-center space-x-2">${title === 'Active Leads' ? `<button id="header-new-lead-btn" class="action-button primary-action-btn"><i data-lucide="plus" class="w-4 h-4 mr-2"></i>New Lead</button>` : ''}</div></div><div class="p-4"><input type="text" placeholder="Search leads..." class="w-full md:w-1/3 p-2 border border-gray-300 rounded-md text-sm font-light"></div><div class="overflow-x-auto"><table class="w-full"><thead><tr class="border-b border-gray-200"><th class="p-4 text-left w-10"><input type="checkbox" id="select-all-checkbox"></th><th class="p-4 text-left table-header">Name</th><th class="p-4 text-left table-header">Contact Info</th><th class="p-4 text-left table-header">Company</th><th class="p-4 text-left table-header">Value</th><th class="p-4 text-left table-header">Assigned To</th><th class="p-4 text-left table-header">Actions</th></tr></thead><tbody id="leads-tbody">${leads.length > 0 ? leads.map(lead => `
-                                    <tr class="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
-                                        <td class="table-cell"><input type="checkbox" class="lead-checkbox" data-id="${lead.id}"></td>
-                                        <td class="table-cell font-medium text-gray-800 text-sm"><a href="#" class="hover:underline view-lead-details" data-id="${lead.id}">${lead.name}</a></td>
-                                        <td class="table-cell text-gray-600 text-sm font-light"><div>${lead.email}</div><div class="text-xs text-gray-500 mt-1">${lead.phone}</div></td>
-                                        <td class="table-cell text-gray-600 text-sm font-light"><div>${lead.companyName}</div></td>
-                                        <td class="table-cell text-gray-600 text-sm font-semibold">$${(lead.leadValue || 0).toLocaleString()}</td>
-                                        <td class="table-cell text-gray-600 text-sm font-light">${lead.assignedAgent ? agentName : 'Unassigned'}</td>
-                                        <td class="table-cell">${currentUserRole === 'manager' && !lead.assignedAgent ? `<button class="action-button assign-lead-btn" data-id="${lead.id}"><i data-lucide="user-check" class="w-4 h-4 mr-2"></i>Assign</button>` : ''}</td>
-                                    </tr>`).join('') : `<tr><td colspan="7" class="text-center p-12 text-gray-500 font-light">No leads found.</td></tr>`}</tbody></table></div></div>`;
+        function renderLeadsView(title, leads) {
+            return `<div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-light text-gray-800 dark:text-white">${title}</h2>
+                        <div class="flex items-center space-x-4">
+                           <input type="text" placeholder="Search leads..." class="w-full md:w-64 p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg text-sm font-light">
+                           ${title === 'Active Leads' ? `<button id="header-new-lead-btn" class="action-button primary-action-btn"><i data-lucide="plus" class="w-4 h-4 mr-2"></i>New Lead</button>` : ''}
+                        </div>
+                    </div>
+                    <div id="leads-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        ${leads.length > 0 ? leads.map((lead, index) => `
+                            <div class="lead-card" data-id="${lead.id}" style="animation-delay: ${index * 50}ms">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800 dark:text-white">${lead.name}</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 font-light">${lead.companyName}</p>
+                                    </div>
+                                    <span class="status-badge status-${lead.status}">${lead.status}</span>
+                                </div>
+                                <div class="my-6">
+                                    <p class="text-3xl font-light text-gray-900 dark:text-white">$${(lead.leadValue || 0).toLocaleString()}</p>
+                                    <p class="text-xs text-gray-400 dark:text-gray-500 font-light">Lead Value</p>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-sm">
+                                        <span class="font-semibold text-gray-600 dark:text-gray-400">Assigned:</span>
+                                        <span class="font-light text-gray-500 dark:text-gray-300">${lead.assignedAgentName || 'Unassigned'}</span>
+                                    </div>
+                                    ${currentUserRole === 'manager' && !lead.assignedAgentId ? `<button class="action-button assign-lead-btn text-xs py-2 px-3" data-id="${lead.id}" data-name="${lead.name}"><i data-lucide="user-check" class="w-4 h-4 mr-2"></i>Assign</button>` : ''}
+                                </div>
+                            </div>
+                        `).join('') : `<p class="col-span-full text-center p-12 text-gray-500 font-light">No leads found.</p>`}
+                    </div>`;
         }
         
         async function renderLeadDetailView(leadId) {
@@ -573,12 +776,25 @@
             const leadSnap = await getDoc(leadRef);
             if (!leadSnap.exists()) { mainContent.innerHTML = `<div class="text-center p-10">Lead not found.</div>`; return; }
             const lead = { id: leadSnap.id, ...leadSnap.data() };
-            openModal(`<div class="p-8"><div class="flex justify-between items-start mb-6"><div><h3 class="text-2xl font-semibold">${lead.name}</h3><p class="text-gray-500">${lead.companyName} - <span class="font-bold">$${(lead.leadValue || 0).toLocaleString()}</span></p></div><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800">&times;</button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div class="col-span-1"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">Details</h4><div class="space-y-4 text-sm"><p><strong class="font-semibold text-gray-600">Email:</strong><br><span class="font-light">${lead.email}</span></p><p><strong class="font-semibold text-gray-600">Phone:</strong><br><span class="font-light">${lead.phone}</span></p><p><strong class="font-semibold text-gray-600">Country:</strong><br><span class="font-light">${lead.country || 'N/A'}</span></p><p><strong class="font-semibold text-gray-600">Source:</strong><br><span class="font-light">${lead.leadSource || 'N/A'}</span></p><p><strong class="font-semibold text-gray-600">Status:</strong><br><span class="capitalize px-2 py-1 text-xs rounded-full font-medium ${lead.status === 'active' ? 'bg-blue-100 text-blue-800' : 'bg-gray-200 text-gray-800'}">${lead.status}</span></p></div><h4 class="text-sm font-semibold text-gray-500 uppercase mt-8 mb-4 tracking-wider">Actions</h4><div class="flex flex-col space-y-2"><button class="action-button detail-action-button mark-won-btn" data-id="${lead.id}"><i data-lucide="award" class="w-4 h-4 mr-2"></i>Mark as Won</button><button class="action-button detail-action-button mark-cold-btn" data-id="${lead.id}"><i data-lucide="snowflake" class="w-4 h-4 mr-2"></i>Mark as Cold</button><button class="action-button detail-action-button mark-lost-btn" data-id="${lead.id}"><i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>Mark as Lost</button></div></div><div class="col-span-2"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-4 tracking-wider">Call Notes</h4><div id="notes-list" class="space-y-3 max-h-64 overflow-y-auto pr-2 mb-4">${lead.notes?.map(note => `<div class="bg-gray-50 p-3 rounded-md text-sm"><p class="font-light">${note.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(note.timestamp.seconds * 1000).toLocaleString()}</p></div>`).join('') || '<p class="text-sm text-gray-400 font-light">No notes yet.</p>'}</div><textarea id="new-note-text" class="w-full p-2 border border-gray-300 rounded-md font-light" placeholder="Add a new call note..."></textarea><button id="add-note-btn" data-id="${lead.id}" class="action-button primary-action-btn mt-2">Add Note</button></div></div></div>`, 'max-w-4xl');
+            openModal(`<div class="p-8 bg-gray-50 dark:bg-gray-900"><div class="flex justify-between items-start mb-6"><div><h3 class="text-2xl font-bold text-gray-800 dark:text-white">${lead.name}</h3><p class="text-gray-500 dark:text-gray-400 font-medium">${lead.companyName} - <span class="font-bold text-blue-600 dark:text-blue-400">$${(lead.leadValue || 0).toLocaleString()}</span></p></div><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-800 transition-colors">&times;</button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div class="md:col-span-1 space-y-6"><div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3 tracking-wider">Details</h4><div class="space-y-3 text-sm"><div class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.email}</span></div><div class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.phone}</span></div><div class="flex items-center"><i data-lucide="globe" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.country || 'N/A'}</span></div><div class="flex items-center"><i data-lucide="flag" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.leadSource || 'N/A'}</span></div><div class="flex items-center"><i data-lucide="info" class="w-4 h-4 mr-3 text-gray-400"></i><span class="status-badge status-${lead.status}">${lead.status}</span></div></div></div><div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3 tracking-wider">Actions</h4><div class="flex flex-col space-y-2"><button class="action-button detail-action-button mark-won-btn" data-id="${lead.id}"><i data-lucide="award" class="w-4 h-4 mr-2"></i>Mark as Won</button><button class="action-button detail-action-button mark-cold-btn" data-id="${lead.id}"><i data-lucide="snowflake" class="w-4 h-4 mr-2"></i>Mark as Cold</button><button class="action-button detail-action-button mark-lost-btn" data-id="${lead.id}"><i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>Mark as Lost</button></div></div></div><div class="md:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3 tracking-wider">Call Notes</h4><div id="notes-list" class="space-y-3 max-h-64 overflow-y-auto pr-2 mb-4">${lead.notes?.map(note => `<div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md text-sm border dark:border-gray-600"><p class="font-light">${note.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(note.timestamp.seconds * 1000).toLocaleString()}</p></div>`).join('') || '<p class="text-sm text-gray-400 font-light">No notes yet.</p>'}</div><textarea id="new-note-text" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-md font-light" placeholder="Add a new call note..."></textarea><button id="add-note-btn" data-id="${lead.id}" class="action-button primary-action-btn mt-2 w-full">Add Note</button></div></div></div>`, 'max-w-4xl');
             document.getElementById('close-modal-btn').addEventListener('click', closeModal);
             document.getElementById('add-note-btn').addEventListener('click', addNote);
-            document.querySelector('.mark-won-btn').addEventListener('click', (e) => updateLeadStatus(e.currentTarget.dataset.id, 'won'));
-            document.querySelector('.mark-lost-btn').addEventListener('click', (e) => updateLeadStatus(e.currentTarget.dataset.id, 'lost'));
-            document.querySelector('.mark-cold-btn').addEventListener('click', (e) => { showConfirmModal('Mark as Cold?', 'This will trigger the AI nurturing sequence.', () => { updateLeadStatus(e.currentTarget.dataset.id, 'cold'); triggerAINurturing(lead); closeModal(); }); });
+            document.querySelector('.mark-won-btn').addEventListener('click', (e) => showMarkAsWonModal(e.currentTarget.dataset.id));
+            document.querySelector('.mark-lost-btn').addEventListener('click', (e) => {
+                updateLeadStatus(e.currentTarget.dataset.id, { status: 'lost' }).then(() => {
+                    closeModal();
+                    document.querySelector('.nav-link.active')?.click();
+                });
+            });
+            document.querySelector('.mark-cold-btn').addEventListener('click', (e) => {
+                showConfirmModal('Mark as Cold?', 'This will trigger the AI nurturing sequence.', () => {
+                    updateLeadStatus(lead.id, { status: 'cold' }).then(() => {
+                        closeModal(); // Close the confirm modal first
+                        triggerAINurturing(lead);
+                        document.querySelector('.nav-link.active')?.click();
+                    });
+                });
+            });
         }
         
         async function renderAppointmentsPage() {
@@ -590,23 +806,186 @@
             const allAppointments = [];
             snapshot.docs.forEach(doc => {
                 const lead = doc.data();
-                if (currentUserRole === 'agent' && lead.assignedAgent !== agentId) return;
+                if (currentUserRole === 'agent' && lead.assignedAgentId !== auth.currentUser.uid) return;
                 lead.appointments.forEach(appt => { allAppointments.push({ ...appt, leadName: lead.name, companyName: lead.companyName }); });
             });
-            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 mb-6">Scheduled Appointments</h2><div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5">${allAppointments.length > 0 ? allAppointments.map(appt => `<div class="border-b last:border-b-0 py-4"><p class="font-semibold">${new Date(appt.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p><p class="text-sm text-gray-700 font-light mt-1">${appt.notes}</p><p class="text-xs text-gray-500 mt-2">With: ${appt.leadName} (${appt.companyName})</p></div>`).join('') : '<p class="text-center p-12 text-gray-500 font-light">No appointments scheduled.</p>'}</div>`;
+            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">Scheduled Appointments</h2><div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5">${allAppointments.length > 0 ? allAppointments.map(appt => `<div class="border-b dark:border-gray-700 last:border-b-0 py-4"><p class="font-semibold">${new Date(appt.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p><p class="text-sm text-gray-700 dark:text-gray-300 font-light mt-1">${appt.notes}</p><p class="text-xs text-gray-500 dark:text-gray-400 mt-2">With: ${appt.leadName} (${appt.companyName})</p></div>`).join('') : '<p class="text-center p-12 text-gray-500 font-light">No appointments scheduled.</p>'}</div>`;
         }
         
-        function setupTableInteractions(status) {
-            document.querySelectorAll('.view-lead-details').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); renderLeadDetailView(e.currentTarget.dataset.id); }); });
-            document.querySelectorAll('.assign-lead-btn').forEach(btn => { btn.addEventListener('click', (e) => { const leadId = e.currentTarget.dataset.id; showConfirmModal('Assign Lead?', `Assign this lead to ${agentName}?`, () => updateLeadStatus(leadId, 'active', agentId)); }); });
+        async function renderSettingsPage() {
+            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">Settings</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-1">
+                        <div id="settings-nav" class="flex flex-col space-y-1">
+                            <a href="#" class="nav-link active" data-target="profile-settings">Profile</a>
+                            <a href="#" class="nav-link" data-target="security-settings">Security</a>
+                            <a href="#" class="nav-link" data-target="appearance-settings">Appearance</a>
+                            ${currentUserRole === 'manager' ? `<a href="#" class="nav-link" data-target="team-settings">Team Management</a>` : ''}
+                        </div>
+                    </div>
+                    <div id="settings-content" class="md:col-span-3">
+                        <!-- Content will be injected here -->
+                    </div>
+                </div>`;
+            
+            const settingsNavLinks = document.querySelectorAll('#settings-nav .nav-link');
+            const settingsContent = document.getElementById('settings-content');
+
+            const renderSettingsTab = async (target) => {
+                settingsNavLinks.forEach(l => l.classList.remove('active'));
+                document.querySelector(`[data-target="${target}"]`).classList.add('active');
+
+                let content = '';
+                switch(target) {
+                    case 'profile-settings':
+                        content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-semibold mb-4">Profile Information</h3>
+                            <form id="profile-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Display Name</label>
+                                    <input type="text" name="displayName" value="${auth.currentUser.displayName || ''}" class="mt-1 block w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm">
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="action-button primary-action-btn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>`;
+                        break;
+                    case 'security-settings':
+                        content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-semibold mb-4">Change Password</h3>
+                            <form id="password-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Password</label>
+                                    <input type="password" name="newPassword" class="mt-1 block w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm" required>
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="action-button primary-action-btn">Update Password</button>
+                                </div>
+                            </form>
+                        </div>`;
+                        break;
+                    case 'appearance-settings':
+                        const isDarkMode = document.documentElement.classList.contains('dark');
+                        content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-semibold mb-4">Appearance</h3>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">Dark Mode</span>
+                                <button id="theme-toggle" class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${isDarkMode ? 'bg-blue-600' : 'bg-gray-200'}">
+                                    <span class="sr-only">Enable dark mode</span>
+                                    <span class="inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${isDarkMode ? 'translate-x-6' : 'translate-x-1'}"></span>
+                                </button>
+                            </div>
+                        </div>`;
+                        break;
+                    case 'team-settings':
+                         try {
+                            const usersRef = collection(db, 'users');
+                            const snapshot = await getDocs(query(usersRef, where("role", "==", "agent")));
+                            const agents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <h3 class="text-lg font-semibold mb-4">Team Management</h3>
+                                <div class="space-y-3">
+                                    ${agents.map(agent => `<div class="flex items-center justify-between p-3 border dark:border-gray-700 rounded-md">
+                                        <div>
+                                            <p class="font-semibold">${agent.displayName || agent.email}</p>
+                                            <p class="text-xs text-gray-500">${agent.email}</p>
+                                        </div>
+                                        <button class="action-button elevate-btn" data-id="${agent.id}">Elevate to Manager</button>
+                                    </div>`).join('')}
+                                </div>
+                            </div>`;
+                        } catch (e) {
+                             content = `<div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 text-yellow-700 dark:text-yellow-300 p-4" role="alert">
+                                <p class="font-bold">Permission Required</p>
+                                <p>Could not load team members. Your Firestore security rules may need to be updated to allow managers to view other users.</p>
+                            </div>`;
+                        }
+                        break;
+                }
+                settingsContent.innerHTML = content;
+                lucide.createIcons();
+                addSettingsEventListeners(target);
+            };
+
+            settingsNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    renderSettingsTab(e.currentTarget.dataset.target);
+                });
+            });
+
+            // Initial tab render
+            renderSettingsTab('profile-settings');
+        }
+
+        function addSettingsEventListeners(target) {
+            if (target === 'profile-settings') {
+                document.getElementById('profile-form')?.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const newName = e.target.displayName.value;
+                    await updateProfile(auth.currentUser, { displayName: newName });
+                    await updateDoc(doc(db, "users", auth.currentUser.uid), { displayName: newName });
+                    alert('Profile updated!');
+                    setupHeader(auth.currentUser); // Refresh header with new initials
+                });
+            }
+            if (target === 'security-settings') {
+                document.getElementById('password-form')?.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const newPassword = e.target.newPassword.value;
+                    try {
+                        await updatePassword(auth.currentUser, newPassword);
+                        alert('Password updated successfully!');
+                    } catch (error) {
+                        displayError("Password update failed.", error);
+                    }
+                });
+            }
+            if(target === 'appearance-settings') {
+                document.getElementById('theme-toggle')?.addEventListener('click', () => {
+                    const html = document.documentElement;
+                    html.classList.toggle('dark');
+                    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                    renderSettingsPage(); // Re-render to update toggle state
+                });
+            }
+            if (target === 'team-settings') {
+                document.querySelectorAll('.elevate-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const userIdToElevate = e.currentTarget.dataset.id;
+                        showConfirmModal('Elevate User?', 'Are you sure you want to promote this agent to manager?', async () => {
+                            await updateDoc(doc(db, "users", userIdToElevate), { role: 'manager' });
+                            closeModal();
+                            renderSettingsPage();
+                        });
+                    });
+                });
+            }
+        }
+
+        function setupLeadInteractions(leads) {
+            document.querySelectorAll('.lead-card').forEach(card => { 
+                card.addEventListener('click', (e) => { 
+                    if (!e.target.closest('.assign-lead-btn')) {
+                        renderLeadDetailView(e.currentTarget.dataset.id);
+                    }
+                }); 
+            });
+            document.querySelectorAll('.assign-lead-btn').forEach(btn => { 
+                btn.addEventListener('click', (e) => { 
+                    e.stopPropagation();
+                    const leadId = e.currentTarget.dataset.id; 
+                    const lead = leads.find(l => l.id === leadId);
+                    showAssignLeadModal(leadId, lead.name);
+                }); 
+            });
             document.getElementById('header-new-lead-btn')?.addEventListener('click', showAddLeadModal);
         }
         
-        const updateLeadStatus = (id, newStatus, assignedAgent = null) => {
+        const updateLeadStatus = (id, dataToUpdate) => {
             const leadRef = doc(db, 'users', userId, 'leads', id);
-            const dataToUpdate = { status: newStatus };
-            if (assignedAgent) { dataToUpdate.assignedAgent = assignedAgent; }
-            updateDoc(leadRef, dataToUpdate).then(() => { if(document.querySelector('.nav-link.active')) { document.querySelector('.nav-link.active').click(); } });
+            return updateDoc(leadRef, dataToUpdate);
         };
         
         async function addNote(e) {
@@ -616,41 +995,173 @@
             const leadRef = doc(db, 'users', userId, 'leads', leadId);
             const newNote = { text: noteText, timestamp: new Date() };
             await updateDoc(leadRef, { notes: arrayUnion(newNote) });
-            const notesList = document.getElementById('notes-list');
-            const noteElement = document.createElement('div');
-            noteElement.className = 'bg-gray-50 p-3 rounded-md text-sm';
-            noteElement.innerHTML = `<p class="font-light">${newNote.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(newNote.timestamp.seconds * 1000).toLocaleString()}</p>`;
-            if (notesList.querySelector('p')) { notesList.innerHTML = ''; }
-            notesList.appendChild(noteElement);
-            document.getElementById('new-note-text').value = '';
+            renderLeadDetailView(leadId); // Re-render the detail view to show the new note
         }
 
-        function showScheduleMeetingModal(leadId) {
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Schedule Meeting</h3><form id="schedule-meeting-form"><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Date & Time</label><input name="date" type="datetime-local" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Notes</label><textarea name="notes" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="3" required></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" class="action-button primary-action-btn">Schedule</button></div></form></div>`, 'max-w-lg');
+        function showMarkAsWonModal(leadId) {
+            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">Mark Lead as Won</h3><p class="text-gray-600 dark:text-gray-400 mb-6">Enter the final revenue for this deal.</p>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Final Revenue ($)</label>
+                    <input id="final-revenue" type="number" placeholder="5000" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light">
+                </div>
+                <div class="flex justify-end space-x-3 mt-8">
+                    <button type="button" id="cancel-modal-btn" class="action-button">Cancel</button>
+                    <button type="submit" id="confirm-won-btn" class="action-button primary-action-btn">Confirm Win</button>
+                </div>
+            </div>`, 'max-w-md');
+
             document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
-            document.getElementById('schedule-meeting-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const meetingData = { date: new Date(formData.get('date')).toISOString(), notes: formData.get('notes') };
-                const leadRef = doc(db, 'users', userId, 'leads', leadId);
-                await updateDoc(leadRef, { appointments: arrayUnion(meetingData) });
-                closeModal();
+            document.getElementById('confirm-won-btn').addEventListener('click', () => {
+                const revenueInput = document.getElementById('final-revenue');
+                const revenue = parseFloat(revenueInput.value);
+                if (!revenue || revenue < 0) {
+                    revenueInput.classList.add('input-error');
+                    return;
+                }
+                updateLeadStatus(leadId, { status: 'won', leadValue: revenue }).then(() => {
+                    closeModal();
+                    document.querySelector('.nav-link.active')?.click();
+                });
             });
         }
 
+        async function showAssignLeadModal(leadId, leadName) {
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where("role", "==", "agent"));
+            
+            try {
+                const snapshot = await getDocs(q);
+                const agents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">Assign Lead</h3><p class="text-gray-600 dark:text-gray-400 mb-6">Assign "${leadName}" to an agent.</p>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Select Agent</label>
+                        <select id="agent-select" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light">
+                            <option value="">-- Select an Agent --</option>
+                            ${agents.map(agent => `<option value="${agent.id}" data-name="${agent.displayName || agent.email.split('@')[0]}">${agent.displayName || agent.email}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-3 mt-8">
+                        <button type="button" id="cancel-modal-btn" class="action-button">Cancel</button>
+                        <button type="submit" id="confirm-assign-btn" class="action-button primary-action-btn" disabled>Confirm Assignment</button>
+                    </div>
+                </div>`, 'max-w-md');
+
+                const selectEl = document.getElementById('agent-select');
+                const confirmBtn = document.getElementById('confirm-assign-btn');
+
+                selectEl.addEventListener('change', () => {
+                    confirmBtn.disabled = !selectEl.value;
+                });
+
+                document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+                confirmBtn.addEventListener('click', () => {
+                    const selectedOption = selectEl.options[selectEl.selectedIndex];
+                    if (selectedOption && selectedOption.value) {
+                        const agentDetails = {
+                            id: selectedOption.value,
+                            name: selectedOption.dataset.name
+                        };
+                        updateLeadStatus(leadId, { status: 'active', assignedAgentId: agentDetails.id, assignedAgentName: agentDetails.name }).then(() => {
+                            closeModal();
+                            document.querySelector('.nav-link.active')?.click();
+                        });
+                    }
+                });
+            } catch (error) {
+                displayError("Could not fetch agent list. This is likely a Firestore security rule or indexing issue.", error);
+            }
+        }
+
         function showAddLeadModal() {
-             openModal(`<div class="p-8"><div class="flex justify-between items-center"><h3 class="text-xl font-semibold">Add New Lead</h3><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800">&times;</button></div><p class="text-sm text-gray-500 font-light mt-1 mb-6">Fill in the information below to add a new lead.</p><form id="add-lead-form" class="space-y-4"><div class="grid grid-cols-2 gap-x-6 gap-y-4"><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Name</label><input name="name" type="text" placeholder="John Doe" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div><label class="block text-sm font-medium text-gray-700">Country Code</label><input name="countryCode" type="text" placeholder="+91" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div><label class="block text-sm font-medium text-gray-700">Phone Number</label><input name="phoneNumber" type="tel" placeholder="9876543210" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Email</label><input name="email" type="email" placeholder="email@example.com" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Company Name</label><input name="companyName" type="text" placeholder="Innovate Inc." class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Company Website</label><input name="companyWebsite" type="url" placeholder="https://example.com" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div class="col-span-2"><label class="block text-sm font-medium text-gray-700">Designation</label><input name="title" type="text" placeholder="Marketing Director" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div></div><div class="pt-6 flex justify-end space-x-3"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" class="action-button primary-action-btn">Add Lead</button></div></form></div>`, 'max-w-3xl');
+             openModal(`<div class="p-8"><div class="flex justify-between items-center"><h3 class="text-xl font-semibold">Add New Lead</h3><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-800">&times;</button></div><p class="text-sm text-gray-500 dark:text-gray-400 font-light mt-1 mb-6">Fill in the information below to add a new lead.</p>
+                <form id="add-lead-form">
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                            <input name="name" type="text" placeholder="John Doe" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                            <input name="email" type="email" placeholder="email@example.com" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
+                            <input name="companyName" type="text" placeholder="Innovate Inc." class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Designation</label>
+                            <input name="title" type="text" placeholder="Marketing Director" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                        </div>
+                        <div class="relative">
+                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Website</label>
+                            <input name="companyWebsite" id="company-website-input" type="text" placeholder="example.com" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                            <span id="website-validation-icon" class="absolute right-3 top-9"></span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                            <input name="phoneNumber" type="tel" placeholder="9876543210" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                        </div>
+                    </div>
+                    <div class="pt-6 flex justify-end space-x-3">
+                        <button type="button" id="cancel-modal-btn" class="action-button">Cancel</button>
+                        <button type="submit" class="action-button primary-action-btn">Add Lead</button>
+                    </div>
+                </form>
+             </div>`, 'max-w-3xl');
+            
             document.getElementById('close-modal-btn').addEventListener('click', closeModal);
             document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+
+            const websiteInput = document.getElementById('company-website-input');
+            const validationIcon = document.getElementById('website-validation-icon');
+
+            websiteInput.addEventListener('blur', (e) => {
+                const url = e.target.value.trim();
+                validationIcon.innerHTML = ''; // Clear previous icon
+                if (!url) return;
+
+                const isValid = /^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(url) || /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/.test(url);
+
+                validationIcon.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 text-gray-400 animate-spin"></i>`;
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    if (isValid) {
+                        validationIcon.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>`;
+                        websiteInput.dataset.isValid = "true";
+                    } else {
+                        validationIcon.innerHTML = `<i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>`;
+                        websiteInput.dataset.isValid = "false";
+                    }
+                    lucide.createIcons();
+                }, 500);
+            });
+
             document.getElementById('add-lead-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+
+                if (websiteInput.dataset.isValid === "false") {
+                    const customAlert = document.createElement('div');
+                    customAlert.className = 'fixed top-5 right-5 bg-red-500 text-white py-2 px-4 rounded-lg shadow-lg animate-pulse';
+                    customAlert.innerText = 'Please enter a valid website address.';
+                    document.body.appendChild(customAlert);
+                    setTimeout(() => customAlert.remove(), 3000);
+                    return;
+                }
+
                 const formData = new FormData(e.target);
+                let website = formData.get('companyWebsite').trim();
+                if (website && !/^https?:\/\//i.test(website)) {
+                    website = 'https://' + website;
+                }
+
                 const leadData = {
                     name: formData.get('name'),
-                    phone: `${formData.get('countryCode')} ${formData.get('phoneNumber')}`,
+                    phone: formData.get('phoneNumber'),
                     email: formData.get('email'),
                     companyName: formData.get('companyName'),
-                    companyWebsite: formData.get('companyWebsite'),
+                    companyWebsite: website,
                     title: formData.get('title'),
                     country: 'Unknown',
                     leadSource: 'Manual',
@@ -658,33 +1169,61 @@
                 };
                 
                 const leadsRef = collection(db, 'users', userId, 'leads');
-                try { await addDoc(leadsRef, { ...leadData, status: 'active', createdAt: new Date(), notes: [], appointments: [] }); closeModal(); } 
-                catch (error) { console.error("Error adding lead: ", error); alert("Failed to add lead. Check console for details."); }
+                try { 
+                    await addDoc(leadsRef, { ...leadData, status: 'active', createdAt: new Date(), notes: [], appointments: [] }); 
+                    closeModal(); 
+                } 
+                catch (error) { 
+                    displayError("Failed to add lead.", error);
+                }
             });
         }
         async function triggerAINurturing(lead) {
+            // This function is now called after the lead status is updated, so we re-open a new modal.
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-4">AI Nurturing Sequence</h3><p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Generating personalized outreach for ${lead.name}...</p><textarea id="ai-outreach-content" class="w-full h-48 p-3 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-md font-light" readonly>Generating...</textarea><div class="flex justify-end space-x-3 mt-4"><button id="close-ai-modal-btn" class="action-button">Close</button><button id="send-outreach-btn" class="action-button primary-action-btn" disabled><i data-lucide="${lead.country?.toLowerCase() === 'india' ? 'message-circle' : 'mail'}" class="w-4 h-4 mr-2"></i>Send</button></div></div>`);
+            
+            const outreachContentEl = document.getElementById('ai-outreach-content');
+            const sendBtn = document.getElementById('send-outreach-btn');
+            const closeBtn = document.getElementById('close-ai-modal-btn');
+            closeBtn.addEventListener('click', closeModal);
+
             const notesText = lead.notes?.map(n => n.text).join('\n') || "No call notes available.";
-            const prompt = `Analyze the following lead information and generate a personalized follow-up message. The goal is to re-engage this "cold" lead by providing value and showing you understand their business. LEAD DETAILS: - Contact: ${lead.name} - Company: ${lead.companyName} - Country: ${lead.country} - Call Notes: ${notesText} INSTRUCTIONS: 1. Infer the lead's potential business needs. 2. Write a short, professional, and friendly message. 3. Tailor for ${lead.country.toLowerCase() === 'india' ? 'WhatsApp' : 'Email'}. 4. End with a soft call-to-action.`;
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-4">AI Nurturing Sequence</h3><p class="text-sm text-gray-500 mb-4">Generating personalized outreach for ${lead.name}...</p><textarea id="ai-outreach-content" class="w-full h-48 p-3 border border-gray-300 rounded-md font-light" readonly>Generating...</textarea><div class="flex justify-end space-x-3 mt-4"><button id="close-ai-modal-btn" class="action-button">Close</button><button id="send-outreach-btn" class="action-button primary-action-btn" disabled><i data-lucide="${lead.country.toLowerCase() === 'india' ? 'message-circle' : 'mail'}" class="w-4 h-4 mr-2"></i>Send</button></div></div>`);
+            const prompt = `Analyze the following lead information and generate a personalized follow-up message. The goal is to re-engage this "cold" lead by providing value and showing you understand their business. LEAD DETAILS: - Contact: ${lead.name} - Company: ${lead.companyName} - Country: ${lead.country} - Call Notes: ${notesText} INSTRUCTIONS: 1. Infer the lead's potential business needs. 2. Write a short, professional, and friendly message. 3. Tailor for ${lead.country?.toLowerCase() === 'india' ? 'WhatsApp' : 'Email'}. 4. End with a soft call-to-action.`;
+
             try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`;
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
-                if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const payload = { contents: [{ parts: [{ text: prompt }] }] };
+                const response = await fetch(apiUrl, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    throw new Error(`API error: ${response.statusText} - ${errorBody}`);
+                }
                 const result = await response.json();
-                const text = result.candidates[0].content.parts[0].text;
-                document.getElementById('ai-outreach-content').value = text;
-                const sendBtn = document.getElementById('send-outreach-btn');
-                sendBtn.disabled = false;
-                sendBtn.addEventListener('click', () => { console.log(`Simulated sending to ${lead.name}`); closeModal(); });
+                
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    if (outreachContentEl) outreachContentEl.value = text;
+                    if (sendBtn) {
+                        sendBtn.disabled = false;
+                        sendBtn.addEventListener('click', () => { console.log(`Simulated sending to ${lead.name}`); closeModal(); });
+                    }
+                } else {
+                    throw new Error("Unexpected API response structure.");
+                }
             } catch (error) {
                 console.error("Gemini API error:", error);
-                document.getElementById('ai-outreach-content').value = 'Failed to generate AI message. Check console for details.';
+                if (outreachContentEl) outreachContentEl.value = 'Failed to generate AI message. Check console for details.';
             }
-            document.getElementById('close-ai-modal-btn').addEventListener('click', closeModal);
         }
 
         function showLogInteractionModal() {
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Log an Interaction</h3><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Find Lead</label><input id="log-interaction-search" type="text" placeholder="Search by name or company..." class="w-full p-3 border border-gray-300 rounded-md font-light"><div id="log-interaction-results" class="mt-2"></div></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Notes</label><textarea id="log-interaction-notes" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="4" placeholder="Add call notes or meeting summary..."></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" id="log-interaction-submit" class="action-button primary-action-btn" disabled>Log Interaction</button></div></div>`, 'max-w-lg');
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Log an Interaction</h3><div class="mb-4"><label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Find Lead</label><input id="log-interaction-search" type="text" placeholder="Search by name or company..." class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light"><div id="log-interaction-results" class="mt-2"></div></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Notes</label><textarea id="log-interaction-notes" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" rows="4" placeholder="Add call notes or meeting summary..."></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" id="log-interaction-submit" class="action-button primary-action-btn" disabled>Log Interaction</button></div></div>`, 'max-w-lg');
             
             const searchInput = document.getElementById('log-interaction-search');
             const resultsDiv = document.getElementById('log-interaction-results');
@@ -706,7 +1245,7 @@
                     }
                 });
 
-                resultsDiv.innerHTML = results.map(lead => `<div class="p-2 hover:bg-gray-100 cursor-pointer rounded" data-id="${lead.id}" data-name="${lead.name}">${lead.name} (${lead.companyName})</div>`).join('');
+                resultsDiv.innerHTML = results.map(lead => `<div class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded" data-id="${lead.id}" data-name="${lead.name}">${lead.name} (${lead.companyName})</div>`).join('');
                 
                 resultsDiv.querySelectorAll('div').forEach(item => {
                     item.addEventListener('click', () => {
@@ -729,7 +1268,7 @@
         }
 
         function showAIAssistantModal() {
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">AI Assistant</h3><div class="mb-4"><textarea id="ai-assistant-prompt" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="3" placeholder="Ask the AI anything... e.g., 'Draft a follow-up for John Smith'"></textarea></div><div class="mb-4 bg-gray-50 p-4 rounded-md min-h-[100px]" id="ai-assistant-response"></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Close</button><button type="submit" id="ai-assistant-submit" class="action-button primary-action-btn">Generate</button></div></div>`, 'max-w-lg');
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">AI Assistant</h3><div class="mb-4"><textarea id="ai-assistant-prompt" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" rows="3" placeholder="Ask the AI anything... e.g., 'Draft a follow-up for John Smith'"></textarea></div><div class="mb-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-md min-h-[100px]" id="ai-assistant-response"></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Close</button><button type="submit" id="ai-assistant-submit" class="action-button primary-action-btn">Generate</button></div></div>`, 'max-w-lg');
             
             document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
             document.getElementById('ai-assistant-submit').addEventListener('click', async () => {
@@ -740,7 +1279,8 @@
 
                 responseDiv.innerHTML = 'Generating...';
                 try {
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`;
+                    const apiKey = "";
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
                     if (!response.ok) throw new Error(`API error: ${response.statusText}`);
                     const result = await response.json();
