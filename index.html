@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,48 +18,29 @@
 
     <style>
         /* Custom Styles for a high-class, professional UI */
-        :root {
-            --background: #f8f9fa;
-            --foreground: #212529;
-            --card-background: white;
-            --border-color: #e9ecef;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --input-background: white;
-        }
-        html.dark {
-            --background: #111827;
-            --foreground: #f9fafb;
-            --card-background: #1f2937;
-            --border-color: #374151;
-            --text-primary: #f9fafb;
-            --text-secondary: #9ca3af;
-            --input-background: #374151;
-        }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
+            background-color: #f8f9fa;
+            color: #212529;
             font-weight: 400; 
-            transition: background-color 0.3s, color 0.3s;
         }
         .nav-link {
             display: flex;
             align-items: center;
             padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            color: var(--text-secondary);
+            color: #6c757d;
             transition: background-color 0.2s, color 0.2s;
         }
         .nav-link:hover {
-            background-color: rgba(128, 128, 128, 0.1);
-            color: var(--text-primary);
+            background-color: #f1f3f5;
+            color: #212529;
         }
         .nav-link.active {
-            background-color: rgba(128, 128, 128, 0.2);
-            color: var(--text-primary);
+            background-color: #e9ecef;
+            color: #212529;
             font-weight: 600;
         }
         .action-button {
@@ -67,29 +48,29 @@
             align-items: center;
             justify-content: center;
             padding: 12px 16px; 
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-background);
+            border: 1px solid #dee2e6;
+            background-color: white;
             transition: all 0.2s;
             line-height: 1;
         }
         .action-button:hover {
             border-color: #adb5bd;
-            background-color: rgba(128, 128, 128, 0.05);
+            background-color: #f8f9fa;
         }
         .action-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
         .primary-action-btn {
-             background-color: var(--foreground);
-             color: var(--background);
-             border-color: var(--foreground);
+             background-color: #212529;
+             color: white;
+             border-color: #212529;
         }
         .primary-action-btn:hover {
-            opacity: 0.9;
+            background-color: #343a40;
         }
         .fab-menu-item {
             transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -118,7 +99,7 @@
             font-weight: 600;
             font-size: 14px;
             transition: color 0.3s ease-in-out;
-            border-radius: 6px;
+            border-radius: 8px;
             z-index: 10;
         }
         .auth-toggle-btn.active {
@@ -146,9 +127,9 @@
         
         /* Lead Card Styles */
         .lead-card {
-            background-color: var(--card-background);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
             padding: 24px;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             cursor: pointer;
@@ -159,9 +140,6 @@
         .lead-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-        html.dark .lead-card:hover {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         @keyframes card-fade-in {
             to {
@@ -184,7 +162,7 @@
         .status-lost { background-color: #fee2e2; color: #991b1b; }
 
         #modal-content {
-            background-color: var(--background);
+            background-color: #f8f9fa;
             animation: modal-slide-down 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
         @keyframes modal-slide-down {
@@ -194,10 +172,34 @@
         .profile-dropdown {
             transition: opacity 0.2s, transform 0.2s;
         }
-
+        .lead-tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .lead-tab.active {
+            background-color: #374151;
+            color: white;
+        }
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+        }
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+        }
+        .faq-chevron {
+            transition: transform 0.3s ease-in-out;
+        }
     </style>
 </head>
-<body class="text-gray-700 dark:text-gray-300 antialiased">
+<body class="text-gray-800 antialiased">
 
     <!-- Auth Screen -->
     <div id="auth-screen" class="w-screen h-screen flex items-center justify-center bg-gray-100 p-4">
@@ -220,22 +222,23 @@
     <div id="app-screen" class="hidden">
         <div id="app-container" class="flex flex-col h-screen w-screen">
             <!-- Header Navigation -->
-            <header class="bg-white dark:bg-gray-900/80 dark:backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 px-8 z-20">
+            <header class="bg-white border-b border-gray-200 px-8 z-20">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center space-x-8">
-                        <h1 class="text-xl text-gray-800 dark:text-white tracking-wider">
+                        <h1 class="text-xl text-gray-800 tracking-wider">
                             <span class="font-light">LEAD</span><span class="font-extrabold">NEST</span>
                         </h1>
                         <nav id="top-nav" class="flex items-center space-x-2"></nav>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div id="profile-menu-container" class="relative">
-                            <button id="profile-menu-button" class="w-10 h-10 rounded-full bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-white font-bold text-sm uppercase">
+                            <button id="profile-menu-button" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-sm uppercase">
                                 AB
                             </button>
-                            <div id="profile-menu-dropdown" class="profile-dropdown absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 border border-gray-200 dark:border-gray-700 origin-top-right transform scale-95 opacity-0 hidden">
-                                <a href="#" id="profile-settings-link" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
-                                <a href="#" id="logout-btn" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
+                            <div id="profile-menu-dropdown" class="profile-dropdown absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-200 origin-top-right transform scale-95 opacity-0 hidden">
+                                <a href="#" id="profile-settings-link" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" id="help-link" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Help & Support</a>
+                                <a href="#" id="logout-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
                             </div>
                         </div>
                     </div>
@@ -250,12 +253,12 @@
         <div id="fab-blur-overlay" class="fab-blur-overlay fixed inset-0 z-20 hidden" style="backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); background-color: rgba(248, 249, 250, 0.5);"></div>
 
         <!-- Floating Action Button (FAB) -->
-        <div id="fab-container" class="fixed z-30" style="bottom: 3%; left: 3%;">
-            <div id="fab-menu" class="flex flex-col items-start space-y-3 mb-3">
-                 <div id="fab-ai-assistant" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-purple-600 border-purple-600 hover:bg-purple-500"><i data-lucide="sparkles" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">AI Assistant</span></div>
-                 <div id="fab-log-interaction" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-blue-600 border-blue-600 hover:bg-blue-500"><i data-lucide="message-square-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">Log Interaction</span></div>
-                 <div id="fab-new-appointment" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-green-600 border-green-600 hover:bg-green-500"><i data-lucide="calendar-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">New Appointment</span></div>
-                 <div id="fab-new-lead" class="fab-menu-item flex items-center"><button class="action-button primary-action-btn rounded-full p-3 shadow-lg"><i data-lucide="user-plus" class="w-5 h-5"></i></button><span class="text-sm font-semibold bg-white dark:bg-gray-700 py-1 px-3 rounded-md shadow-md ml-3">New Lead</span></div>
+        <div id="fab-container" class="fixed z-30" style="bottom: 3%; right: 3%;">
+            <div id="fab-menu" class="flex flex-col items-end space-y-3 mb-3">
+                 <div id="fab-ai-assistant" class="fab-menu-item flex items-center"><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md mr-3">AI Assistant</span><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-purple-600 border-purple-600 hover:bg-purple-500"><i data-lucide="sparkles" class="w-5 h-5"></i></button></div>
+                 <div id="fab-log-interaction" class="fab-menu-item flex items-center"><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md mr-3">Log Interaction</span><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-blue-600 border-blue-600 hover:bg-blue-500"><i data-lucide="message-square-plus" class="w-5 h-5"></i></button></div>
+                 <div id="fab-new-appointment" class="fab-menu-item flex items-center"><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md mr-3">New Appointment</span><button class="action-button primary-action-btn rounded-full p-3 shadow-lg bg-green-600 border-green-600 hover:bg-green-500"><i data-lucide="calendar-plus" class="w-5 h-5"></i></button></div>
+                 <div id="fab-new-lead" class="fab-menu-item flex items-center"><span class="text-sm font-semibold bg-white py-1 px-3 rounded-md shadow-md mr-3">New Lead</span><button class="action-button primary-action-btn rounded-full p-3 shadow-lg"><i data-lucide="user-plus" class="w-5 h-5"></i></button></div>
             </div>
             <button id="fab-main-btn" class="bg-gray-800 text-white rounded-full p-4 shadow-xl hover:bg-gray-700 transition-transform transform hover:rotate-45"><i data-lucide="grip" class="w-6 h-6"></i></button>
         </div>
@@ -263,7 +266,7 @@
 
     <!-- Modal -->
     <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-        <div id="modal-content" class="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl"></div>
+        <div id="modal-content" class="bg-white rounded-lg shadow-xl w-full max-w-2xl"></div>
     </div>
 
 
@@ -287,6 +290,7 @@
         
         // --- GLOBAL APP STATE ---
         let db, auth, userId, currentUserRole;
+        let currentCalendarDate = new Date();
         
         // --- DOM ELEMENTS ---
         const mainContent = document.getElementById('main-content');
@@ -305,7 +309,11 @@
             errorDiv.id = 'auth-error';
             errorDiv.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4 text-sm';
             
-            if (error?.code === 'auth/email-already-in-use') {
+            if (error?.code === 'auth/network-request-failed') {
+                errorDiv.textContent = 'Network error. Please check your internet connection and try again.';
+            } else if (error?.code === 'auth/invalid-credential') {
+                errorDiv.textContent = 'Invalid email or password. Please try again.';
+            } else if (error?.code === 'auth/email-already-in-use') {
                 errorDiv.innerHTML = 'This email is already registered. <a href="#" id="error-show-login" class="font-semibold underline">Please log in.</a>';
             } else {
                 errorDiv.textContent = error?.message?.replace('Firebase: ', '') || 'An unknown error occurred.';
@@ -442,12 +450,8 @@
         
         // --- INITIALIZATION ---
         async function initialize() {
-            // Apply theme on initial load
-            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('theme');
 
             try {
                 const app = initializeApp(firebaseConfig);
@@ -497,6 +501,7 @@
             const profileButton = document.getElementById('profile-menu-button');
             const profileDropdown = document.getElementById('profile-menu-dropdown');
             const settingsLink = document.getElementById('profile-settings-link');
+            const helpLink = document.getElementById('help-link');
             const logoutBtn = document.getElementById('logout-btn');
 
             const displayName = user.displayName || user.email;
@@ -519,6 +524,10 @@
                 e.preventDefault();
                 renderSettingsPage();
             });
+            helpLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                renderHelpPage();
+            });
             logoutBtn.addEventListener('click', () => signOut(auth));
 
             window.addEventListener('click', () => {
@@ -532,12 +541,12 @@
         function setupNavigation() {
             const baseNav = [
                 { id: 'dashboard', label: 'Dashboard', icon: 'layout-grid' },
-                { id: 'leads', label: 'Active Leads', icon: 'users' },
-                { id: 'cold-leads', label: 'Cold Leads', icon: 'snowflake' },
-                { id: 'won-leads', label: 'Won Leads', icon: 'award' },
+                { id: 'active-leads', label: 'Active Leads', icon: 'users' },
+                { id: 'all-leads', label: 'All Leads', icon: 'archive' },
                 { id: 'appointments', label: 'Appointments', icon: 'calendar' },
+                { id: 'reports', label: 'Reports', icon: 'bar-chart-2' },
             ];
-            const managerNav = baseNav; // Managers see all base tabs
+            const managerNav = baseNav;
             const agentNav = baseNav;
             const navItems = currentUserRole === 'manager' ? managerNav : agentNav;
 
@@ -552,16 +561,15 @@
                     const navId = link.id.replace('nav-', '');
                     switch(navId) {
                         case 'dashboard': renderDashboard(); break;
-                        case 'leads': renderLeadsPage('active'); break;
-                        case 'cold-leads': renderLeadsPage('cold'); break;
-                        case 'won-leads': renderLeadsPage('won'); break;
+                        case 'active-leads': renderLeadsPage(); break;
+                        case 'all-leads': renderAllLeadsPage(); break;
                         case 'appointments': renderAppointmentsPage(); break;
                         case 'settings': renderSettingsPage(); break;
+                        case 'reports': renderReportsPage(); break;
                     }
                 });
             });
 
-            // Set default active link
             const dashboardLink = document.getElementById('nav-dashboard');
             if (dashboardLink) {
                 dashboardLink.classList.add('active');
@@ -591,7 +599,7 @@
         }
         
         function openModal(content, size = 'max-w-2xl') {
-            modalContent.className = `bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full ${size}`;
+            modalContent.className = `bg-white rounded-lg shadow-xl w-full ${size}`;
             modalContent.innerHTML = content;
             modalBackdrop.classList.remove('hidden');
             modalBackdrop.classList.add('flex');
@@ -605,7 +613,7 @@
         }
         
         function showConfirmModal(title, message, onConfirm) {
-            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">${title}</h3><p class="text-gray-600 dark:text-gray-400 mb-6">${message}</p><div class="flex justify-end space-x-3"><button id="cancel-confirm-btn" class="action-button">Cancel</button><button id="confirm-action-btn" class="action-button bg-red-600 text-white hover:bg-red-500 border-red-600">Confirm</button></div></div>`, 'max-w-md');
+            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">${title}</h3><p class="text-gray-600 mb-6">${message}</p><div class="flex justify-end space-x-3"><button id="cancel-confirm-btn" class="action-button">Cancel</button><button id="confirm-action-btn" class="action-button bg-red-600 text-white hover:bg-red-500 border-red-600">Confirm</button></div></div>`, 'max-w-md');
             document.getElementById('cancel-confirm-btn').addEventListener('click', closeModal);
             document.getElementById('confirm-action-btn').addEventListener('click', onConfirm);
         }
@@ -613,7 +621,7 @@
         modalBackdrop.addEventListener('click', (e) => { if (e.target === modalBackdrop) closeModal(); });
 
         function createStatCard(title, value, icon) {
-            return `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500 dark:text-gray-400">${title}</span><i data-lucide="${icon}" class="w-5 h-5 text-gray-400"></i></div><p class="text-4xl font-light text-gray-800 dark:text-white mt-2">${value}</p></div>`;
+            return `<div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"><div class="flex items-center justify-between"><span class="text-sm font-medium text-gray-500">${title}</span><i data-lucide="${icon}" class="w-5 h-5 text-gray-400"></i></div><p class="text-4xl font-light text-gray-800 mt-2">${value}</p></div>`;
         }
 
         function renderDashboard() {
@@ -641,8 +649,8 @@
                     totalDeals++;
                     if(lead.status === 'won') { dealsWon++; totalRevenue += lead.leadValue || 0; }
                     if(lead.status === 'cold') coldLeadsCount++;
-                    if(lead.status === 'active' && !lead.notes?.length) funnel.new++;
-                    if(lead.status === 'active' && lead.notes?.length) funnel.contacted++;
+                    if(lead.status === 'active' && !lead.assignedAgentId) funnel.new++;
+                    if(lead.status === 'active' && lead.assignedAgentId && !lead.notes?.length) funnel.contacted++;
                     if(lead.appointments?.length > 0) funnel.appointment++;
                     if(lead.status === 'won') funnel.won++;
                     
@@ -668,18 +676,21 @@
                 const avgDealSize = dealsWon > 0 ? (totalRevenue / dealsWon).toFixed(0) : 0;
                 
                 mainContent.innerHTML = `
-                    <h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">Manager Dashboard</h2>
+                    <h2 class="text-3xl font-light text-gray-800 mb-6">Manager Dashboard</h2>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-                        ${createStatCard('Total Revenue', '$' + totalRevenue.toLocaleString(), 'dollar-sign')}
+                        ${createStatCard('Total Revenue', '₹' + totalRevenue.toLocaleString('en-IN'), 'dollar-sign')}
                         ${createStatCard('Win Rate', winRate + '%', 'trophy')}
-                        ${createStatCard('Avg. Deal Size', '$' + avgDealSize.toLocaleString(), 'gem')}
+                        ${createStatCard('Avg. Deal Size', '₹' + avgDealSize.toLocaleString('en-IN'), 'gem')}
                         ${createStatCard('Cold Leads', coldLeadsCount, 'snowflake')}
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2">${renderManagerReports(agentPerformance, leadSources)}</div>
-                        <div>${renderSalesFunnel(funnel)}</div>
-                    </div>`;
+                        <div class="lg:col-span-2 space-y-8">${renderManagerReports(agentPerformance, leadSources)}</div>
+                        <div class="h-full">${renderSalesFunnel(funnel)}</div>
+                    </div>
+                     <div class="mt-8">${renderAIStrategicAssistant()}</div>
+                    `;
                 lucide.createIcons();
+                addAIAssistantListeners();
             } catch (error) { displayError("Could not load Manager Dashboard.", error); }
         }
 
@@ -700,77 +711,169 @@
                 });
 
                 mainContent.innerHTML = `
-                     <h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">My Dashboard</h2>
+                     <h2 class="text-3xl font-light text-gray-800 mb-6">My Dashboard</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         ${createStatCard('My Active Leads', activeLeads, 'user-check')}
                         ${createStatCard('Appointments Booked', appointments, 'calendar')}
                         ${createStatCard('Deals Won', dealsWon, 'award')}
-                    </div>`;
+                    </div>
+                     <div class="mt-8">${renderAIStrategicAssistant()}</div>
+                    `;
                 lucide.createIcons();
+                addAIAssistantListeners();
             } catch (error) { displayError("Could not load Agent Dashboard.", error); }
         }
 
         function renderManagerReports(agentData, sourceData) {
             const topAgent = Object.values(agentData).sort((a,b) => b.revenue - a.revenue)[0];
             const sortedSources = Object.entries(sourceData).sort((a,b) => b[1].value - a[1].value);
-            return `<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5 mb-8"><h3 class="text-xl font-medium text-gray-800 dark:text-white mb-4">Team Performance</h3><p class="font-light mb-2">Top Agent: <span class="font-semibold">${topAgent ? topAgent.name : 'N/A'}</span> with $${topAgent ? topAgent.revenue.toLocaleString() : 0} in revenue.</p></div><div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 dark:text-white mb-4">Lead Source Value</h3><div class="space-y-3">${sortedSources.length > 0 ? sortedSources.map(([source, data]) => `<div class="w-full"><div class="flex justify-between text-sm font-medium mb-1"><span>${source}</span><span>$${data.value.toLocaleString()}</span></div><div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: ${ (data.value / (sortedSources[0][1].value || 1)) * 100}%"></div></div></div>`).join('') : '<p class="text-center font-light text-gray-500 p-4">No data available.</p>'}</div></div>`;
+            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 mb-4">Team Performance</h3><p class="font-light mb-2">Top Agent: <span class="font-semibold">${topAgent ? topAgent.name : 'N/A'}</span> with ₹${topAgent ? topAgent.revenue.toLocaleString('en-IN') : 0} in revenue.</p></div><div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 mb-4">Lead Source Value</h3><div class="space-y-3">${sortedSources.length > 0 ? sortedSources.map(([source, data]) => `<div class="w-full"><div class="flex justify-between text-sm font-medium mb-1"><span>${source}</span><span>₹${data.value.toLocaleString('en-IN')}</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: ${ (data.value / (sortedSources[0][1].value || 1)) * 100}%"></div></div></div>`).join('') : '<p class="text-center font-light text-gray-500 p-4">No data available.</p>'}</div></div>`;
         }
 
         function renderSalesFunnel(funnelData) {
-            return `<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5"><h3 class="text-xl font-medium text-gray-800 dark:text-white mb-4">Sales Funnel</h3><div class="space-y-4">${createFunnelStage('New', funnelData.new, 'bg-purple-200 text-purple-800')}${createFunnelStage('Contacted', funnelData.contacted, 'bg-indigo-200 text-indigo-800')}${createFunnelStage('Appointment', funnelData.appointment, 'bg-blue-200 text-blue-800')}${createFunnelStage('Won', funnelData.won, 'bg-green-200 text-green-800')}</div></div>`;
-        }
-
-        function createFunnelStage(name, value, colorClass) {
-            return `<div class="flex items-center justify-between"><span class="font-medium text-sm">${name}</span><span class="text-sm font-semibold px-2 py-1 rounded-md ${colorClass}">${value}</span></div>`;
+            const total = Object.values(funnelData).reduce((sum, val) => sum + val, 0) || 1;
+            const colors = { new: 'bg-purple-500', contacted: 'bg-indigo-500', appointment: 'bg-blue-500', won: 'bg-green-500' };
+            return `<div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 h-full flex flex-col">
+                        <h3 class="text-xl font-medium text-gray-800 mb-4">Sales Funnel</h3>
+                        <div class="flex-grow flex flex-col justify-center space-y-2">
+                            ${Object.entries(funnelData).map(([stage, value]) => `
+                                <div class="flex items-center">
+                                    <span class="w-28 text-sm font-medium text-gray-600 capitalize">${stage}</span>
+                                    <div class="flex-grow bg-gray-200 rounded-full h-6 mr-2">
+                                        <div class="${colors[stage]} h-6 rounded-full text-white text-xs flex items-center justify-center" style="width: ${ (value / total) * 100}%">${value}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
         }
         
-        function renderLeadsPage(status) {
-             const title = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+        function renderLeadsPage() {
+             const title = "Active Leads";
              mainContent.innerHTML = `<div class="text-center p-10">Loading ${title}...</div>`;
              if (!userId) return;
+             
              const leadsRef = collection(db, 'users', userId, 'leads');
              let q;
-             if (currentUserRole === 'manager') { q = query(leadsRef, where("status", "==", status)); } 
-             else { q = query(leadsRef, where("status", "==", status), where("assignedAgentId", "==", auth.currentUser.uid)); }
+             if (currentUserRole === 'manager') {
+                 q = query(leadsRef, where("status", "==", "active")); 
+             } else {
+                 q = query(leadsRef, where("status", "==", "active"), where("assignedAgentId", "==", auth.currentUser.uid)); 
+             }
+
              onSnapshot(q, (snapshot) => {
-                const leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                mainContent.innerHTML = renderLeadsView(title, leads);
+                let leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                if(currentUserRole === 'manager') {
+                    leads = leads.filter(lead => lead.assignedAgentId);
+                }
+
+                mainContent.innerHTML = `
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-light text-gray-800">${title}</h2>
+                        <div class="flex items-center space-x-4">
+                           <input type="text" placeholder="Search leads..." class="w-full md:w-64 p-3 border border-gray-300 bg-white rounded-lg text-sm font-light">
+                        </div>
+                    </div>
+                    ${renderLeadsGrid(leads)}
+                `;
                 lucide.createIcons();
                 setupLeadInteractions(leads);
              }, (error) => { displayError(`Could not load ${title}.`, error); });
         }
 
-        function renderLeadsView(title, leads) {
-            return `<div class="flex justify-between items-center mb-6">
-                        <h2 class="text-3xl font-light text-gray-800 dark:text-white">${title}</h2>
-                        <div class="flex items-center space-x-4">
-                           <input type="text" placeholder="Search leads..." class="w-full md:w-64 p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg text-sm font-light">
-                           ${title === 'Active Leads' ? `<button id="header-new-lead-btn" class="action-button primary-action-btn"><i data-lucide="plus" class="w-4 h-4 mr-2"></i>New Lead</button>` : ''}
-                        </div>
+        function renderAllLeadsPage() {
+            mainContent.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-light text-gray-800">Leads Database</h2>
+                    <div class="flex items-center space-x-4">
+                       <input type="text" placeholder="Search leads..." class="w-full md:w-64 p-3 border border-gray-300 bg-white rounded-lg text-sm font-light">
+                       <button id="header-new-lead-btn" class="action-button primary-action-btn"><i data-lucide="plus" class="w-4 h-4 mr-2"></i>New Lead</button>
                     </div>
-                    <div id="leads-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                </div>
+                <div class="border-b border-gray-200 mb-4">
+                    <nav id="leads-tabs" class="-mb-px flex space-x-6" aria-label="Tabs">
+                        <a href="#" class="lead-tab active" data-status="new">New</a>
+                        <a href="#" class="lead-tab" data-status="cold">Cold</a>
+                        <a href="#" class="lead-tab" data-status="won">Won</a>
+                        <a href="#" class="lead-tab" data-status="lost">Lost</a>
+                    </nav>
+                </div>
+                <div id="leads-content"></div>
+            `;
+            
+            const tabs = document.querySelectorAll('#leads-tabs .lead-tab');
+            let allLeads = []; // Cache all leads
+
+            const leadsRef = collection(db, 'users', userId, 'leads');
+            onSnapshot(leadsRef, (snapshot) => {
+                allLeads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                const activeTab = document.querySelector('#leads-tabs .lead-tab.active');
+                if (activeTab) {
+                    renderLeadsByStatus(activeTab.dataset.status, allLeads);
+                }
+            }, (error) => {
+                displayError("Could not load leads.", error);
+                document.getElementById('leads-content').innerHTML = `<p class="text-red-500">Error loading leads.</p>`;
+            });
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    renderLeadsByStatus(tab.dataset.status, allLeads);
+                });
+            });
+
+            document.getElementById('header-new-lead-btn')?.addEventListener('click', showAddLeadModal);
+        }
+
+        function renderLeadsByStatus(status, allLeads) {
+             const contentArea = document.getElementById('leads-content');
+             contentArea.innerHTML = `<div class="text-center p-10">Filtering...</div>`;
+             
+             let leadsToShow = [];
+             if (status === 'new') {
+                 leadsToShow = allLeads.filter(lead => lead.status === 'active' && !lead.assignedAgentId);
+             } else {
+                 leadsToShow = allLeads.filter(lead => lead.status === status);
+             }
+             
+             if (currentUserRole !== 'manager') {
+                 leadsToShow = leadsToShow.filter(lead => lead.assignedAgentId === auth.currentUser.uid);
+             }
+
+             contentArea.innerHTML = renderLeadsGrid(leadsToShow);
+             lucide.createIcons();
+             setupLeadInteractions(leadsToShow);
+        }
+
+        function renderLeadsGrid(leads) {
+             return `<div id="leads-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         ${leads.length > 0 ? leads.map((lead, index) => `
                             <div class="lead-card" data-id="${lead.id}" style="animation-delay: ${index * 50}ms">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-lg font-bold text-gray-800 dark:text-white">${lead.name}</h3>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 font-light">${lead.companyName}</p>
+                                        <h3 class="text-lg font-bold text-gray-800">${lead.name}</h3>
+                                        <p class="text-sm text-gray-500 font-light">${lead.companyName}</p>
                                     </div>
                                     <span class="status-badge status-${lead.status}">${lead.status}</span>
                                 </div>
                                 <div class="my-6">
-                                    <p class="text-3xl font-light text-gray-900 dark:text-white">$${(lead.leadValue || 0).toLocaleString()}</p>
-                                    <p class="text-xs text-gray-400 dark:text-gray-500 font-light">Lead Value</p>
+                                    <p class="text-3xl font-light text-gray-900">₹${(lead.leadValue || 0).toLocaleString('en-IN')}</p>
+                                    <p class="text-xs text-gray-400 font-light">Lead Value</p>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <div class="text-sm">
-                                        <span class="font-semibold text-gray-600 dark:text-gray-400">Assigned:</span>
-                                        <span class="font-light text-gray-500 dark:text-gray-300">${lead.assignedAgentName || 'Unassigned'}</span>
+                                        <span class="font-semibold text-gray-600">Assigned:</span>
+                                        <span class="font-light text-gray-500">${lead.assignedAgentName || 'Unassigned'}</span>
                                     </div>
-                                    ${currentUserRole === 'manager' && !lead.assignedAgentId ? `<button class="action-button assign-lead-btn text-xs py-2 px-3" data-id="${lead.id}" data-name="${lead.name}"><i data-lucide="user-check" class="w-4 h-4 mr-2"></i>Assign</button>` : ''}
+                                    ${currentUserRole === 'manager' && !lead.assignedAgentId && lead.status === 'active' ? `<button class="action-button assign-lead-btn text-xs py-2 px-3" data-id="${lead.id}" data-name="${lead.name}"><i data-lucide="user-check" class="w-4 h-4 mr-2"></i>Assign</button>` : ''}
                                 </div>
                             </div>
-                        `).join('') : `<p class="col-span-full text-center p-12 text-gray-500 font-light">No leads found.</p>`}
+                        `).join('') : `<p class="col-span-full text-center p-12 text-gray-500 font-light">No leads found in this category.</p>`}
                     </div>`;
         }
         
@@ -779,9 +882,10 @@
             const leadSnap = await getDoc(leadRef);
             if (!leadSnap.exists()) { mainContent.innerHTML = `<div class="text-center p-10">Lead not found.</div>`; return; }
             const lead = { id: leadSnap.id, ...leadSnap.data() };
-            openModal(`<div class="p-8 bg-gray-50 dark:bg-gray-900"><div class="flex justify-between items-start mb-6"><div><h3 class="text-2xl font-bold text-gray-800 dark:text-white">${lead.name}</h3><p class="text-gray-500 dark:text-gray-400 font-medium">${lead.companyName} - <span class="font-bold text-blue-600 dark:text-blue-400">$${(lead.leadValue || 0).toLocaleString()}</span></p></div><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-800 transition-colors">&times;</button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div class="md:col-span-1 space-y-6"><div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3 tracking-wider">Details</h4><div class="space-y-3 text-sm"><div class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.email}</span></div><div class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.phone}</span></div><div class="flex items-center"><i data-lucide="globe" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.country || 'N/A'}</span></div><div class="flex items-center"><i data-lucide="flag" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.leadSource || 'N/A'}</span></div><div class="flex items-center"><i data-lucide="info" class="w-4 h-4 mr-3 text-gray-400"></i><span class="status-badge status-${lead.status}">${lead.status}</span></div></div></div><div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3 tracking-wider">Actions</h4><div class="flex flex-col space-y-2"><button class="action-button detail-action-button mark-won-btn" data-id="${lead.id}"><i data-lucide="award" class="w-4 h-4 mr-2"></i>Mark as Won</button><button class="action-button detail-action-button mark-cold-btn" data-id="${lead.id}"><i data-lucide="snowflake" class="w-4 h-4 mr-2"></i>Mark as Cold</button><button class="action-button detail-action-button mark-lost-btn" data-id="${lead.id}"><i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>Mark as Lost</button></div></div></div><div class="md:col-span-2 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3 tracking-wider">Call Notes</h4><div id="notes-list" class="space-y-3 max-h-64 overflow-y-auto pr-2 mb-4">${lead.notes?.map(note => `<div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md text-sm border dark:border-gray-600"><p class="font-light">${note.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(note.timestamp.seconds * 1000).toLocaleString()}</p></div>`).join('') || '<p class="text-sm text-gray-400 font-light">No notes yet.</p>'}</div><textarea id="new-note-text" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-md font-light" placeholder="Add a new call note..."></textarea><button id="add-note-btn" data-id="${lead.id}" class="action-button primary-action-btn mt-2 w-full">Add Note</button></div></div></div>`, 'max-w-4xl');
+            openModal(`<div class="p-8 bg-gray-50 rounded-xl"><div class="flex justify-between items-start mb-6"><div><h3 class="text-2xl font-bold text-gray-800">${lead.name}</h3><p class="text-gray-500 font-medium">${lead.companyName} - <span class="font-bold text-blue-600">₹${(lead.leadValue || 0).toLocaleString('en-IN')}</span></p></div><button id="close-modal-btn" class="p-2 rounded-full hover:bg-gray-200 text-gray-500 hover:text-gray-800 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button></div><div class="grid grid-cols-1 md:grid-cols-3 gap-8"><div class="md:col-span-1 space-y-6"><div class="bg-white p-4 rounded-xl shadow-sm border"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-3 tracking-wider">Details</h4><div class="space-y-3 text-sm"><div class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.email}</span></div><div class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.phone}</span></div><div class="flex items-center"><i data-lucide="globe" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.country || 'N/A'}</span></div><div class="flex items-center"><i data-lucide="flag" class="w-4 h-4 mr-3 text-gray-400"></i><span class="font-light">${lead.leadSource || 'N/A'}</span></div><div class="flex items-center"><i data-lucide="info" class="w-4 h-4 mr-3 text-gray-400"></i><span class="status-badge status-${lead.status}">${lead.status}</span></div></div></div><div class="bg-white p-4 rounded-xl shadow-sm border"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-3 tracking-wider">Actions</h4><div class="flex flex-col space-y-2"><button class="action-button detail-action-button schedule-meeting-btn" data-id="${lead.id}" data-email="${lead.email}"><i data-lucide="calendar-plus" class="w-4 h-4 mr-2"></i>Schedule Meeting</button><button class="action-button detail-action-button mark-won-btn" data-id="${lead.id}"><i data-lucide="award" class="w-4 h-4 mr-2"></i>Mark as Won</button><button class="action-button detail-action-button mark-cold-btn" data-id="${lead.id}"><i data-lucide="snowflake" class="w-4 h-4 mr-2"></i>Mark as Cold</button><button class="action-button detail-action-button mark-lost-btn" data-id="${lead.id}"><i data-lucide="x-circle" class="w-4 h-4 mr-2"></i>Mark as Lost</button></div></div></div><div class="md:col-span-2 bg-white p-4 rounded-xl shadow-sm border"><h4 class="text-sm font-semibold text-gray-500 uppercase mb-3 tracking-wider">Call Notes</h4><div id="notes-list" class="space-y-3 max-h-64 overflow-y-auto pr-2 mb-4">${lead.notes?.map(note => `<div class="bg-gray-50 p-3 rounded-lg text-sm border"><p class="font-light">${note.text}</p><p class="text-xs text-gray-400 mt-2 text-right">${new Date(note.timestamp.seconds * 1000).toLocaleString()}</p></div>`).join('') || '<p class="text-sm text-gray-400 font-light">No notes yet.</p>'}</div><textarea id="new-note-text" class="w-full p-3 border border-gray-300 bg-gray-50 rounded-lg font-light" placeholder="Add a new call note..."></textarea><button id="add-note-btn" data-id="${lead.id}" class="action-button primary-action-btn mt-2 w-full">Add Note</button></div></div></div>`, 'max-w-4xl');
             document.getElementById('close-modal-btn').addEventListener('click', closeModal);
             document.getElementById('add-note-btn').addEventListener('click', addNote);
+            document.querySelector('.schedule-meeting-btn').addEventListener('click', (e) => showScheduleMeetingModal(e.currentTarget.dataset.id, e.currentTarget.dataset.email));
             document.querySelector('.mark-won-btn').addEventListener('click', (e) => showMarkAsWonModal(e.currentTarget.dataset.id));
             document.querySelector('.mark-lost-btn').addEventListener('click', (e) => {
                 updateLeadStatus(e.currentTarget.dataset.id, { status: 'lost' }).then(() => {
@@ -812,17 +916,16 @@
                 if (currentUserRole === 'agent' && lead.assignedAgentId !== auth.currentUser.uid) return;
                 lead.appointments.forEach(appt => { allAppointments.push({ ...appt, leadName: lead.name, companyName: lead.companyName }); });
             });
-            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">Scheduled Appointments</h2><div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-5">${allAppointments.length > 0 ? allAppointments.map(appt => `<div class="border-b dark:border-gray-700 last:border-b-0 py-4"><p class="font-semibold">${new Date(appt.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p><p class="text-sm text-gray-700 dark:text-gray-300 font-light mt-1">${appt.notes}</p><p class="text-xs text-gray-500 dark:text-gray-400 mt-2">With: ${appt.leadName} (${appt.companyName})</p></div>`).join('') : '<p class="text-center p-12 text-gray-500 font-light">No appointments scheduled.</p>'}</div>`;
+            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 mb-6">Scheduled Appointments</h2><div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5">${allAppointments.length > 0 ? allAppointments.map(appt => `<div class="border-b border-gray-200 last:border-b-0 py-4"><p class="font-semibold">${new Date(appt.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${new Date(appt.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p><p class="text-sm text-gray-700 font-light mt-1">${appt.notes}</p><p class="text-xs text-gray-500 mt-2">With: ${appt.leadName} (${appt.companyName})</p></div>`).join('') : '<p class="text-center p-12 text-gray-500 font-light">No appointments scheduled.</p>'}</div>`;
         }
         
         async function renderSettingsPage() {
-            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 dark:text-white mb-6">Settings</h2>
+            mainContent.innerHTML = `<h2 class="text-3xl font-light text-gray-800 mb-6">Settings</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="md:col-span-1">
                         <div id="settings-nav" class="flex flex-col space-y-1">
                             <a href="#" class="nav-link active" data-target="profile-settings">Profile</a>
                             <a href="#" class="nav-link" data-target="security-settings">Security</a>
-                            <a href="#" class="nav-link" data-target="appearance-settings">Appearance</a>
                             ${currentUserRole === 'manager' ? `<a href="#" class="nav-link" data-target="team-settings">Team Management</a>` : ''}
                         </div>
                     </div>
@@ -841,12 +944,12 @@
                 let content = '';
                 switch(target) {
                     case 'profile-settings':
-                        content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                        content = `<div class="bg-white p-6 rounded-lg border border-gray-200">
                             <h3 class="text-lg font-semibold mb-4">Profile Information</h3>
                             <form id="profile-form" class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Display Name</label>
-                                    <input type="text" name="displayName" value="${auth.currentUser.displayName || ''}" class="mt-1 block w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm">
+                                    <label class="block text-sm font-medium text-gray-700">Display Name</label>
+                                    <input type="text" name="displayName" value="${auth.currentUser.displayName || ''}" class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-md shadow-sm">
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="action-button primary-action-btn">Save Changes</button>
@@ -855,12 +958,12 @@
                         </div>`;
                         break;
                     case 'security-settings':
-                        content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                        content = `<div class="bg-white p-6 rounded-lg border border-gray-200">
                             <h3 class="text-lg font-semibold mb-4">Change Password</h3>
                             <form id="password-form" class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Password</label>
-                                    <input type="password" name="newPassword" class="mt-1 block w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm" required>
+                                    <label class="block text-sm font-medium text-gray-700">New Password</label>
+                                    <input type="password" name="newPassword" class="mt-1 block w-full p-3 border border-gray-300 bg-white rounded-md shadow-sm" required>
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="action-button primary-action-btn">Update Password</button>
@@ -868,28 +971,15 @@
                             </form>
                         </div>`;
                         break;
-                    case 'appearance-settings':
-                        const isDarkMode = document.documentElement.classList.contains('dark');
-                        content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <h3 class="text-lg font-semibold mb-4">Appearance</h3>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium">Dark Mode</span>
-                                <button id="theme-toggle" class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${isDarkMode ? 'bg-blue-600' : 'bg-gray-200'}">
-                                    <span class="sr-only">Enable dark mode</span>
-                                    <span class="inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${isDarkMode ? 'translate-x-6' : 'translate-x-1'}"></span>
-                                </button>
-                            </div>
-                        </div>`;
-                        break;
                     case 'team-settings':
                          try {
                             const usersRef = collection(db, 'users');
                             const snapshot = await getDocs(query(usersRef, where("role", "==", "agent")));
                             const agents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                            content = `<div class="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+                            content = `<div class="bg-white p-6 rounded-lg border border-gray-200">
                                 <h3 class="text-lg font-semibold mb-4">Team Management</h3>
                                 <div class="space-y-3">
-                                    ${agents.map(agent => `<div class="flex items-center justify-between p-3 border dark:border-gray-700 rounded-md">
+                                    ${agents.map(agent => `<div class="flex items-center justify-between p-3 border rounded-md">
                                         <div>
                                             <p class="font-semibold">${agent.displayName || agent.email}</p>
                                             <p class="text-xs text-gray-500">${agent.email}</p>
@@ -899,7 +989,7 @@
                                 </div>
                             </div>`;
                         } catch (e) {
-                             content = `<div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 text-yellow-700 dark:text-yellow-300 p-4 rounded-md" role="alert">
+                             content = `<div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700 p-4 rounded-md" role="alert">
                                 <p class="font-bold">Permission Required</p>
                                 <p>Could not load team members. Your Firestore security rules may need to be updated to allow managers to view other users.</p>
                             </div>`;
@@ -945,14 +1035,6 @@
                     }
                 });
             }
-            if(target === 'appearance-settings') {
-                document.getElementById('theme-toggle')?.addEventListener('click', () => {
-                    const html = document.documentElement;
-                    html.classList.toggle('dark');
-                    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-                    renderSettingsPage(); // Re-render to update toggle state
-                });
-            }
             if (target === 'team-settings') {
                 document.querySelectorAll('.elevate-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -979,8 +1061,8 @@
                 btn.addEventListener('click', (e) => { 
                     e.stopPropagation();
                     const leadId = e.currentTarget.dataset.id; 
-                    const lead = leads.find(l => l.id === leadId);
-                    showAssignLeadModal(leadId, lead.name);
+                    const leadName = e.currentTarget.dataset.name;
+                    showAssignLeadModal(leadId, leadName);
                 }); 
             });
             document.getElementById('header-new-lead-btn')?.addEventListener('click', showAddLeadModal);
@@ -1002,10 +1084,10 @@
         }
 
         function showMarkAsWonModal(leadId) {
-            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">Mark Lead as Won</h3><p class="text-gray-600 dark:text-gray-400 mb-6">Enter the final revenue for this deal.</p>
+            openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">Mark Lead as Won</h3><p class="text-gray-600 mb-6">Enter the final revenue for this deal.</p>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Final Revenue ($)</label>
-                    <input id="final-revenue" type="number" placeholder="5000" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light">
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Final Revenue (₹)</label>
+                    <input id="final-revenue" type="number" placeholder="50000" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light">
                 </div>
                 <div class="flex justify-end space-x-3 mt-8">
                     <button type="button" id="cancel-modal-btn" class="action-button">Cancel</button>
@@ -1036,12 +1118,12 @@
                 const snapshot = await getDocs(q);
                 const agents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">Assign Lead</h3><p class="text-gray-600 dark:text-gray-400 mb-6">Assign "${leadName}" to an agent.</p>
+                openModal(`<div class="p-8"><h3 class="text-lg font-semibold mb-2">Assign Lead</h3><p class="text-gray-600 mb-6">Assign "${leadName}" to an agent.</p>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Select Agent</label>
-                        <select id="agent-select" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light">
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Select Agent</label>
+                        <select id="agent-select" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light">
                             <option value="">-- Select an Agent --</option>
-                            ${agents.map(agent => `<option value="${agent.id}" data-name="${agent.displayName || agent.email.split('@')[0]}">${agent.displayName || agent.email}</option>`).join('')}
+                            ${agents.map(agent => `<option value="${agent.id}" data-name="${agent.displayName || agent.email.split('@')[0]}">${agent.displayName || agent.email.split('@')[0]}</option>`).join('')}
                         </select>
                     </div>
                     <div class="flex justify-end space-x-3 mt-8">
@@ -1077,33 +1159,33 @@
         }
 
         function showAddLeadModal() {
-             openModal(`<div class="p-8"><div class="flex justify-between items-center"><h3 class="text-xl font-semibold">Add New Lead</h3><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-800">&times;</button></div><p class="text-sm text-gray-500 dark:text-gray-400 font-light mt-1 mb-6">Fill in the information below to add a new lead.</p>
+             openModal(`<div class="p-8"><div class="flex justify-between items-center"><h3 class="text-xl font-semibold">Add New Lead</h3><button id="close-modal-btn" class="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800">&times;</button></div><p class="text-sm text-gray-500 font-light mt-1 mb-6">Fill in the information below to add a new lead.</p>
                 <form id="add-lead-form">
                     <div class="grid grid-cols-2 gap-x-6 gap-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
-                            <input name="name" type="text" placeholder="John Doe" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input name="name" type="text" placeholder="John Doe" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                            <input name="email" type="email" placeholder="email@example.com" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input name="email" type="email" placeholder="email@example.com" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Name</label>
-                            <input name="companyName" type="text" placeholder="Innovate Inc." class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                            <input name="companyName" type="text" placeholder="Innovate Inc." class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Designation</label>
-                            <input name="title" type="text" placeholder="Marketing Director" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Designation</label>
+                            <input name="title" type="text" placeholder="Marketing Director" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" required>
                         </div>
                         <div class="relative">
-                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Company Website</label>
-                            <input name="companyWebsite" id="company-website-input" type="text" placeholder="example.com" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                             <label class="block text-sm font-medium text-gray-700 mb-1">Company Website</label>
+                            <input name="companyWebsite" id="company-website-input" type="text" placeholder="example.com" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" required>
                             <span id="website-validation-icon" class="absolute right-3 top-9"></span>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
-                            <input name="phoneNumber" type="tel" placeholder="9876543210" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" required>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input name="phoneNumber" type="tel" placeholder="9876543210" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" required>
                         </div>
                     </div>
                     <div class="pt-6 flex justify-end space-x-3">
@@ -1169,11 +1251,14 @@
                     country: 'Unknown',
                     leadSource: 'Manual',
                     leadValue: 0,
+                    status: 'active', // New leads are active by default
+                    assignedAgentId: null, // New leads are unassigned
+                    assignedAgentName: null,
                 };
                 
                 const leadsRef = collection(db, 'users', userId, 'leads');
                 try { 
-                    await addDoc(leadsRef, { ...leadData, status: 'active', createdAt: new Date(), notes: [], appointments: [] }); 
+                    await addDoc(leadsRef, { ...leadData, createdAt: new Date(), notes: [], appointments: [] }); 
                     closeModal(); 
                 } 
                 catch (error) { 
@@ -1183,7 +1268,7 @@
         }
         async function triggerAINurturing(lead) {
             // This function is now called after the lead status is updated, so we re-open a new modal.
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-4">AI Nurturing Sequence</h3><p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Generating personalized outreach for ${lead.name}...</p><textarea id="ai-outreach-content" class="w-full h-48 p-3 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded-md font-light" readonly>Generating...</textarea><div class="flex justify-end space-x-3 mt-4"><button id="close-ai-modal-btn" class="action-button">Close</button><button id="send-outreach-btn" class="action-button primary-action-btn" disabled><i data-lucide="${lead.country?.toLowerCase() === 'india' ? 'message-circle' : 'mail'}" class="w-4 h-4 mr-2"></i>Send</button></div></div>`);
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-4">AI Nurturing Sequence</h3><p class="text-sm text-gray-500 mb-4">Generating personalized outreach for ${lead.name}...</p><textarea id="ai-outreach-content" class="w-full h-48 p-3 border border-gray-300 bg-gray-50 rounded-md font-light" readonly>Generating...</textarea><div class="flex justify-end space-x-3 mt-4"><button id="close-ai-modal-btn" class="action-button">Close</button><button id="send-outreach-btn" class="action-button primary-action-btn" disabled><i data-lucide="${lead.country?.toLowerCase() === 'india' ? 'message-circle' : 'mail'}" class="w-4 h-4 mr-2"></i>Send</button></div></div>`);
             
             const outreachContentEl = document.getElementById('ai-outreach-content');
             const sendBtn = document.getElementById('send-outreach-btn');
@@ -1226,7 +1311,7 @@
         }
 
         function showLogInteractionModal() {
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Log an Interaction</h3><div class="mb-4"><label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Find Lead</label><input id="log-interaction-search" type="text" placeholder="Search by name or company..." class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light"><div id="log-interaction-results" class="mt-2"></div></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Notes</label><textarea id="log-interaction-notes" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" rows="4" placeholder="Add call notes or meeting summary..."></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" id="log-interaction-submit" class="action-button primary-action-btn" disabled>Log Interaction</button></div></div>`, 'max-w-lg');
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Log an Interaction</h3><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Find Lead</label><input id="log-interaction-search" type="text" placeholder="Search by name or company..." class="w-full p-3 border border-gray-300 bg-white rounded-md font-light"><div id="log-interaction-results" class="mt-2"></div></div><div class="mb-4"><label class="block text-sm font-medium text-gray-600 mb-1">Notes</label><textarea id="log-interaction-notes" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" rows="4" placeholder="Add call notes or meeting summary..."></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" id="log-interaction-submit" class="action-button primary-action-btn" disabled>Log Interaction</button></div></div>`, 'max-w-lg');
             
             const searchInput = document.getElementById('log-interaction-search');
             const resultsDiv = document.getElementById('log-interaction-results');
@@ -1248,7 +1333,7 @@
                     }
                 });
 
-                resultsDiv.innerHTML = results.map(lead => `<div class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded" data-id="${lead.id}" data-name="${lead.name}">${lead.name} (${lead.companyName})</div>`).join('');
+                resultsDiv.innerHTML = results.map(lead => `<div class="p-2 hover:bg-gray-100 cursor-pointer rounded" data-id="${lead.id}" data-name="${lead.name}">${lead.name} (${lead.companyName})</div>`).join('');
                 
                 resultsDiv.querySelectorAll('div').forEach(item => {
                     item.addEventListener('click', () => {
@@ -1271,7 +1356,7 @@
         }
 
         function showAIAssistantModal() {
-            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">AI Assistant</h3><div class="mb-4"><textarea id="ai-assistant-prompt" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md font-light" rows="3" placeholder="Ask the AI anything... e.g., 'Draft a follow-up for John Smith'"></textarea></div><div class="mb-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-md min-h-[100px]" id="ai-assistant-response"></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Close</button><button type="submit" id="ai-assistant-submit" class="action-button primary-action-btn">Generate</button></div></div>`, 'max-w-lg');
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">AI Assistant</h3><div class="mb-4"><textarea id="ai-assistant-prompt" class="w-full p-3 border border-gray-300 bg-white rounded-md font-light" rows="3" placeholder="Ask the AI anything... e.g., 'Draft a follow-up for John Smith'"></textarea></div><div class="mb-4 bg-gray-50 p-4 rounded-md min-h-[100px]" id="ai-assistant-response"></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Close</button><button type="submit" id="ai-assistant-submit" class="action-button primary-action-btn">Generate</button></div></div>`, 'max-w-lg');
             
             document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
             document.getElementById('ai-assistant-submit').addEventListener('click', async () => {
@@ -1295,6 +1380,265 @@
                 }
             });
         }
+        
+        function renderReportsPage() {
+            mainContent.innerHTML = `
+                <h2 class="text-3xl font-light text-gray-800 mb-6">Reports Center</h2>
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-semibold mb-4">Export Data</h3>
+                        <p class="text-sm text-gray-600 mb-4">Download a complete CSV file of all your lead data.</p>
+                        <button id="export-csv-btn" class="action-button primary-action-btn">Export All Data (CSV)</button>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                         <h3 class="text-lg font-semibold mb-4">AI-Powered Report Enhancement</h3>
+                         <p class="text-sm text-gray-600 mb-6">Our AI analyzes your report data to provide strategic recommendations and insights that you might have missed.</p>
+                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold">Smart Summaries</h4>
+                                <p class="text-xs text-gray-500 mt-1">Automatically generate executive summaries highlighting the most important insights from your data.</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold">Competitive Analysis</h4>
+                                <p class="text-xs text-gray-500 mt-1">Compare performance against industry benchmarks and competitors with AI-generated insights.</p>
+                            </div>
+                             <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-semibold">Predictive Trends</h4>
+                                <p class="text-xs text-gray-500 mt-1">Identify emerging patterns and predict future performance based on historical data analysis.</p>
+                            </div>
+                         </div>
+                         <button id="enable-ai-enhancement" class="action-button bg-purple-600 text-white hover:bg-purple-500 border-purple-600 w-full">Enable AI Enhancement</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('export-csv-btn').addEventListener('click', exportDataToCSV);
+        }
+
+        async function exportDataToCSV() {
+            const leadsRef = collection(db, 'users', userId, 'leads');
+            const snapshot = await getDocs(leadsRef);
+            const leads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            const headers = ["ID", "Name", "Company", "Email", "Phone", "Status", "Value (INR)", "Assigned To", "Source", "Created At"];
+            csvContent += headers.join(",") + "\r\n";
+
+            leads.forEach(lead => {
+                const row = [
+                    lead.id,
+                    `"${lead.name || ''}"`,
+                    `"${lead.companyName || ''}"`,
+                    lead.email || '',
+                    `"${lead.phone || ''}"`,
+                    lead.status || '',
+                    lead.leadValue || 0,
+                    `"${lead.assignedAgentName || 'Unassigned'}"`,
+                    lead.leadSource || '',
+                    lead.createdAt.toDate().toLocaleString()
+                ];
+                csvContent += row.join(",") + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "lead_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function renderAIStrategicAssistant() {
+            return `
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-purple-500 mr-3"></i>
+                        <h3 class="text-lg font-semibold">AI Strategic Assistant <span class="text-xs bg-blue-100 text-blue-800 font-semibold px-2 py-1 rounded-full ml-2">Beta</span></h3>
+                    </div>
+                     <p class="text-sm text-gray-600 mb-4">Ask questions about your sales pipeline and get AI-powered insights.</p>
+                    <div class="flex space-x-2">
+                        <input id="ai-assistant-input" type="text" placeholder="e.g., Which lead source converts the fastest?" class="w-full p-3 border border-gray-300 rounded-lg text-sm font-light h-12">
+                        <button id="ai-assistant-analyze-btn" class="action-button primary-action-btn h-12">Analyze</button>
+                    </div>
+                     <div class="mt-4">
+                        <p class="text-xs text-gray-500 mb-2">Quick questions:</p>
+                        <div class="grid grid-cols-2 gap-2">
+                           <button class="action-button quick-question-btn text-xs h-12">Which lead source converts the fastest?</button>
+                           <button class="action-button quick-question-btn text-xs h-12">How can I shorten my sales cycle?</button>
+                           <button class="action-button quick-question-btn text-xs h-12">What's my highest-performing sales rep?</button>
+                           <button class="action-button quick-question-btn text-xs h-12">What stage are most deals getting stuck in?</button>
+                        </div>
+                    </div>
+                    <div id="ai-assistant-response" class="mt-4 p-4 bg-gray-50 rounded-lg min-h-[60px] text-sm font-light"></div>
+                </div>
+            `;
+        }
+
+        function addAIAssistantListeners() {
+            const analyzeBtn = document.getElementById('ai-assistant-analyze-btn');
+            const inputEl = document.getElementById('ai-assistant-input');
+            const responseEl = document.getElementById('ai-assistant-response');
+            
+            const getAIStrategy = async (prompt) => {
+                responseEl.textContent = 'Analyzing...';
+                
+                const leadsRef = collection(db, 'users', userId, 'leads');
+                const snapshot = await getDocs(leadsRef);
+                const allLeads = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+
+                let dataSummary = "General CRM data: ";
+                if (prompt.toLowerCase().includes("fastest")) {
+                    const sourceConversion = {};
+                    allLeads.filter(l => l.status === 'won' && l.createdAt).forEach(l => {
+                        const created = l.createdAt.toMillis();
+                        // Assume a 'wonAt' field exists, or approximate with now
+                        const wonAt = l.wonAt?.toMillis() || Date.now();
+                        const duration = (wonAt - created) / (1000 * 60 * 60 * 24); // duration in days
+                        if (!sourceConversion[l.leadSource]) {
+                            sourceConversion[l.leadSource] = { totalDuration: 0, count: 0 };
+                        }
+                        sourceConversion[l.leadSource].totalDuration += duration;
+                        sourceConversion[l.leadSource].count++;
+                    });
+                    dataSummary = "Based on my data, here are the average conversion times (in days) for each lead source: ";
+                    for(const source in sourceConversion) {
+                        dataSummary += `${source}: ${(sourceConversion[source].totalDuration / sourceConversion[source].count).toFixed(1)} days. `;
+                    }
+                }
+
+                try {
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const fullPrompt = `As a sales strategy expert, answer the following question based on this data: ${dataSummary}\n\nQuestion: ${prompt}`;
+                    const payload = { contents: [{ parts: [{ text: fullPrompt }] }] };
+                    const response = await fetch(apiUrl, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify(payload) 
+                    });
+                    if (!response.ok) throw new Error('API Error');
+                    const result = await response.json();
+                    responseEl.textContent = result.candidates[0].content.parts[0].text;
+                } catch (error) {
+                    console.error("AI Assistant Error:", error);
+                    responseEl.textContent = 'Sorry, I could not process that request.';
+                }
+            };
+            
+            analyzeBtn.addEventListener('click', () => {
+                if(inputEl.value) getAIStrategy(inputEl.value);
+            });
+
+            document.querySelectorAll('.quick-question-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    inputEl.value = btn.textContent;
+                    getAIStrategy(btn.textContent);
+                });
+            });
+        }
+        
+        function renderHelpPage() {
+            mainContent.innerHTML = `
+                <h2 class="text-3xl font-light text-gray-800 mb-6">Help Center</h2>
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-4">Onboarding Guide</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start"><i data-lucide="user-plus" class="w-5 h-5 mr-4 mt-1 text-blue-500"></i><div><h4 class="font-semibold">Step 1: Create a Lead</h4><p class="text-sm text-gray-600">Use the floating action button in the bottom-left corner to add new leads to the system.</p></div></div>
+                            <div class="flex items-start"><i data-lucide="users" class="w-5 h-5 mr-4 mt-1 text-blue-500"></i><div><h4 class="font-semibold">Step 2: Assign a Lead (Managers)</h4><p class="text-sm text-gray-600">Navigate to "All Leads" > "New" tab. Click the "Assign" button on a lead card to assign it to an agent.</p></div></div>
+                            <div class="flex items-start"><i data-lucide="pen-square" class="w-5 h-5 mr-4 mt-1 text-blue-500"></i><div><h4 class="font-semibold">Step 3: Update Lead Status</h4><p class="text-sm text-gray-600">Click on any lead card to open the detail view. Use the action buttons to mark the lead as Won, Cold, or Lost.</p></div></div>
+                             <div class="flex items-start"><i data-lucide="calendar-plus" class="w-5 h-5 mr-4 mt-1 text-blue-500"></i><div><h4 class="font-semibold">Step 4: Schedule a Meeting</h4><p class="text-sm text-gray-600">In the lead detail view, click "Schedule Meeting" to open a form. Fill in the details to generate a Google Calendar invite link.</p></div></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
+                        <div id="faq-container" class="space-y-2"></div>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-semibold mb-4">Still Need Help?</h3>
+                        <p class="text-sm text-gray-600 mb-4">If you can't find the answer you're looking for, create a support ticket and our team will get back to you.</p>
+                        <button id="create-ticket-btn" class="action-button primary-action-btn">Create a Support Ticket</button>
+                    </div>
+                </div>
+            `;
+            const faqs = [
+                { q: "How do I find unassigned leads?", a: "Go to the 'All Leads' page from the main navigation. The 'New' tab, which is active by default, shows all unassigned leads." },
+                { q: "Where do I see leads I've won?", a: "On the 'All Leads' page, click the 'Won' tab to see a list of all your successfully closed deals." },
+                { q: "Can I export my data?", a: "Yes. Navigate to the 'Reports' page, where you will find an 'Export All Data (CSV)' button." },
+                { q: "How does the AI Assistant work?", a: "The AI Assistant on your dashboard can answer strategic questions about your sales data. It analyzes your team's performance to provide data-driven insights, not generic advice." }
+            ];
+            const faqContainer = document.getElementById('faq-container');
+            faqs.forEach(faq => {
+                const item = document.createElement('div');
+                item.className = 'faq-item border-b border-gray-200 last:border-b-0 py-3';
+                item.innerHTML = `
+                    <button class="w-full text-left flex justify-between items-center">
+                        <span class="font-medium">${faq.q}</span>
+                        <i data-lucide="chevron-down" class="faq-chevron w-5 h-5 transition-transform"></i>
+                    </button>
+                    <div class="faq-answer pt-2 text-sm text-gray-600">
+                        ${faq.a}
+                    </div>
+                `;
+                faqContainer.appendChild(item);
+            });
+
+            faqContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+                const item = button.closest('.faq-item');
+                item.classList.toggle('open');
+            });
+            
+            document.getElementById('create-ticket-btn').addEventListener('click', showCreateTicketModal);
+
+            lucide.createIcons();
+        }
+
+        function showScheduleMeetingModal(leadId, leadEmail) {
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Schedule a Meeting</h3><form id="schedule-meeting-form" class="space-y-4"><div><label class="block text-sm font-medium text-gray-600 mb-1">Title</label><input name="title" type="text" class="w-full p-3 border border-gray-300 rounded-md font-light h-12"></div><div><label class="block text-sm font-medium text-gray-600 mb-1">Date & Time</label><input name="date" type="datetime-local" class="w-full p-3 border border-gray-300 rounded-md font-light h-12"></div><div><label class="block text-sm font-medium text-gray-600 mb-1">Description / Notes</label><textarea name="notes" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="3"></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" class="action-button primary-action-btn">Generate Calendar Link</button></div></form></div>`, 'max-w-lg');
+            
+            document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+            
+            document.getElementById('schedule-meeting-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const title = encodeURIComponent(formData.get('title'));
+                const notes = encodeURIComponent(formData.get('notes'));
+                const dateTime = new Date(formData.get('date'));
+                
+                // Format for Google Calendar (YYYYMMDDTHHMMSSZ)
+                const startTime = dateTime.toISOString().replace(/-|:|\.\d{3}/g, '');
+                const endTime = new Date(dateTime.getTime() + 60*60000).toISOString().replace(/-|:|\.\d{3}/g, ''); // Add 1 hour duration
+                const dates = `${startTime}/${endTime}`;
+
+                const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${notes}&add=${leadEmail}`;
+                
+                window.open(googleCalendarUrl, '_blank');
+                
+                const appointmentData = { date: dateTime.toISOString(), notes: formData.get('notes') };
+                const leadRef = doc(db, 'users', userId, 'leads', leadId);
+                await updateDoc(leadRef, { appointments: arrayUnion(appointmentData) });
+
+                closeModal();
+            });
+        }
+        
+        function showCreateTicketModal() {
+            openModal(`<div class="p-8"><h3 class="text-xl font-semibold mb-6">Create Support Ticket</h3><form id="create-ticket-form" class="space-y-4"><div><label class="block text-sm font-medium text-gray-600 mb-1">Subject</label><input name="subject" type="text" class="w-full p-3 border border-gray-300 rounded-md font-light" required></div><div><label class="block text-sm font-medium text-gray-600 mb-1">Describe your issue</label><textarea name="description" class="w-full p-3 border border-gray-300 rounded-md font-light" rows="5" required></textarea></div><div class="flex justify-end space-x-3 mt-8"><button type="button" id="cancel-modal-btn" class="action-button">Cancel</button><button type="submit" class="action-button primary-action-btn">Submit Ticket</button></div></form></div>`, 'max-w-lg');
+            
+            document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+            
+            document.getElementById('create-ticket-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const subject = e.target.subject.value;
+                const description = e.target.description.value;
+                console.log("New Support Ticket:", { subject, description, user: auth.currentUser.email });
+                closeModal();
+                alert("Thank you! Your support ticket has been submitted.");
+            });
+        }
+
 
         // --- START THE APP ---
         window.onload = initialize;
